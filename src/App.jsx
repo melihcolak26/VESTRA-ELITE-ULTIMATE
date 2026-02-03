@@ -3,7 +3,7 @@ import './App.css'
 import { DECISION_TEMPLATES } from './templates/data'
 import Wizard from './components/Wizard'
 import Analyst from './components/Analyst'
-import { Zap, Play, BarChart3, Shield, Cpu, Lock } from 'lucide-react'
+import { Zap, Play, BarChart, Shield, Cpu, Lock } from 'lucide-react'
 
 function App() {
   const [view, setView] = useState(() => localStorage.getItem('vestra_view') || 'landing')
