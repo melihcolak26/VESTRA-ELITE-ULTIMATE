@@ -1,22 +1,22 @@
 :root {
   --primary: #10B981;
   --primary-glow: rgba(16, 185, 129, 0.4);
-  --secondary: #6366F1;
+  --secondary: #3B82F6;
+  --accent: #F43F5E;
   --bg-dark: #020617;
-  --card-bg: rgba(15, 23, 42, 0.4);
+  --bg-gradient: radial-gradient(circle at 50% -20%, #1e293b, #020617 80%);
+  --card-bg: rgba(15, 23, 42, 0.6);
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --glass-highlight: rgba(255, 255, 255, 0.02);
-  --obsidian: #020617;
+  --glass-border: rgba(255, 255, 255, 0.08);
   --emerald: #10B981;
   --indigo: #6366F1;
+  --electric-blue: #0EA5E9;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   background: var(--bg-dark);
+  background-attachment: fixed;
   color: var(--text-primary);
   font-family: 'Outfit', sans-serif;
   min-height: 100vh;
@@ -24,27 +24,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Animations */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+.platform-root {
+  background: var(--bg-gradient);
 }
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.1); }
-}
-
-.shimmer-text {
-  background: linear-gradient(90deg, #fff 0%, var(--primary) 50%, #fff 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 8s linear infinite;
-}
-
-/* Elite Layout Containers */
-.platform-root { position: relative; width: 100%; min-height: 100vh; }
 .container { max-width: 1300px; margin: 0 auto; padding: 0 2rem; }
 
 /* Dynamic Background Elements */

@@ -2,154 +2,190 @@ import React, { useState } from 'react';
 import { 
   ChevronLeft, 
   Zap, 
-  ArrowRight, 
-  Settings, 
-  Activity, 
-  Maximize2,
-  ChevronDown
+  Target, 
+  Brain, 
+  Scale, 
+  Cpu, 
+  Layers,
+  ChevronRight,
+  ShieldCheck,
+  TrendingUp,
+  Award,
+  Box,
+  Compass,
+  ZapOff,
+  BarChart,
+  Lightbulb,
+  Gem
 } from 'lucide-react';
 
 const Blueprint = ({ onBack }) => {
-  const [activeStage, setActiveStage] = useState(0);
+  const [activeTab, setActiveTab] = useState('intro');
 
-  const stages = [
+  const methods = [
     {
-      title: "01. Veri Ekosistemi",
-      subtitle: "Ham Veriden Dijital Matrise",
-      description: "Karar verme süreci, kaotik verilerin disipline edilmesiyle başlar. Vestra, 'Magic Link' teknolojisiyle Amazon, Tesla veya teknik dökümanlardaki parametreleri anında yakalar.",
-      details: [
-        { label: "Otonom Kazıma", value: "Saniyeler içinde yüzlerce teknik veriyi çeker." },
-        { label: "Standardizasyon", value: "Farklı birimleri (Knot, $, km) ortak dile çevirir." }
-      ],
-      icon: (
-        <svg viewBox="0 0 200 200" className="w-full h-full opacity-80">
-          <rect x="40" y="40" width="120" height="120" fill="none" stroke="#10b981" strokeWidth="2" rx="10" />
-          <path d="M40 80 H160 M40 120 H160 M80 40 V160 M120 40 V160" stroke="#10b981" strokeWidth="1" strokeOpacity="0.3" />
-          <circle cx="60" cy="60" r="4" fill="#10b981" />
-          <circle cx="100" cy="100" r="4" fill="#6366f1" />
-          <circle cx="140" cy="140" r="4" fill="#10b981" />
-          <path d="M20 20 L50 50" stroke="#10b981" strokeWidth="2" strokeDasharray="4" />
-          <circle cx="20" cy="20" r="3" fill="#10b981" />
-        </svg>
-      )
+      id: 'entropy',
+      name: 'Shannon Entropy',
+      tag: 'BELİRSİZLİK YÖNETİMİ',
+      desc: 'Verideki kaosun içindeki gizli düzeni bulur. Eğer kriterleriniz birbirine çok yakınsa, Entropy bu gürültüyü temizler ve gerçekten fark yaratan parametreyi en yüksek ağırlığa taşır.',
+      useCase: 'Karmaşık teknik karşılaştırmalarda verinin saf ağırlığını bulmak için.',
+      icon: <Layers className="text-emerald" size={32} />
     },
     {
-      title: "02. Ağırlık Katmanı",
-      subtitle: "Zekanın Öncelik Sıralaması",
-      description: "Her kriter eşit değildir. Shannon Entropy ile verideki belirsizliği, CRITIC ile kriterler arasındaki çatışmayı ölçerek matematiksel 'Ağırlık Merkezi'ni buluruz.",
-      details: [
-        { label: "Shannon Entropy", value: "Objektif belirsizlik ölçümü." },
-        { label: "CRITIC", value: "Kriterler arası korelasyon dengesi." }
-      ],
-      icon: (
-        <svg viewBox="0 0 200 200" className="w-full h-full">
-          <circle cx="100" cy="100" r="60" fill="none" stroke="#6366f1" strokeWidth="1" strokeDasharray="4" />
-          <line x1="100" y1="40" x2="100" y2="160" stroke="#6366f1" strokeWidth="2" />
-          <line x1="40" y1="100" x2="160" y2="100" stroke="#6366f1" strokeWidth="2" />
-          <circle cx="100" cy="100" r="30" fill="#6366f1" fillOpacity="0.2" stroke="#6366f1" strokeWidth="2" />
-          <path d="M70 70 L130 130" stroke="#10b981" strokeWidth="2" />
-        </svg>
-      )
+      id: 'critic',
+      name: 'CRITIC Method',
+      tag: 'ÇATIŞMA ANALİZİ',
+      desc: 'Sadece veriye değil, kriterlerin birbiriyle olan "çatışmasına" ve korelasyonuna bakar. Birbiriyle çelişen hedefler arasındaki en adil dengeyi kurar.',
+      useCase: 'Zıt hedeflerin (Hız vs Yakıt) olduğu kritik senaryolarda denge noktası kurmak için.',
+      icon: <ZapOff className="text-blue-400" size={32} />
     },
     {
-      title: "03. Hibrit Motor",
-      subtitle: "MCDM Algoritmalar Konsensüsü",
-      description: "Vestra, tek bir sonuçla yetinmez. TOPSIS, VIKOR, EDAS ve WASPAS modellerini aynı anda çalıştırarak çapraz doğrulama yapar. Hata payı matematiksel olarak elenir.",
-      details: [
-        { label: "TOPSIS", value: "İdeal noktaya olan mesafeyi ölçer." },
-        { label: "VIKOR", value: "Maksimum fayda, minimum pişmanlık." }
-      ],
-      icon: (
-        <svg viewBox="0 0 200 200" className="w-full h-full">
-          <path d="M100 20 L160 60 V140 L100 180 L40 140 V60 Z" fill="none" stroke="#10b981" strokeWidth="2" />
-          <path d="M100 20 V180 M40 60 L160 140 M40 140 L160 60" stroke="#10b981" strokeWidth="1" strokeOpacity="0.3" />
-          <circle cx="100" cy="100" r="40" fill="#10b981" fillOpacity="0.1" stroke="#10b981" strokeWidth="2" />
-        </svg>
-      )
+      id: 'topsis',
+      name: 'TOPSIS Elite',
+      tag: 'İDEAL NOKTA ANALİZİ',
+      desc: 'İmkansız olan "Mükemmel Çözüm" ile felaket olan "En Kötü Çözüm" arasında bir köprü kurar. Seçeneğinizin o hayali mükemmelliğe ne kadar yakın olduğunu ölçer.',
+      useCase: 'Yatırım kararlarında en güvenli limanı bulmak için.',
+      icon: <Target className="text-emerald" size={32} />
+    },
+    {
+      id: 'vikor',
+      name: 'VIKOR Protocol',
+      tag: 'UZLAŞMACI ÇÖZÜM',
+      desc: 'Karar vericinin "pişmanlığını" minimize eden bir barış diplomatıdır. Seçtiğiniz yolun, her yönden en az kayıp veren yol olduğundan emin olur.',
+      useCase: 'Hata lüksünün olmadığı, toplumsal veya kurumsal risk içeren kararlar için.',
+      icon: <Compass className="text-yellow-400" size={32} />
+    },
+    {
+      id: 'waspas',
+      name: 'WASPAS Matrix',
+      tag: 'ULTRA HASSASİYET',
+      desc: 'Akademik dünyanın en ağır sikleti. Hem toplamsal hem de çarpımsal iki farklı dünyayı birleştirerek %99.9 oranında hatasız bir sıralama üretir.',
+      useCase: 'Yüksek bütçeli satın almalar ve teknolojik altyapı seçimleri için.',
+      icon: <Gem className="text-indigo-400" size={32} />
     }
   ];
 
   return (
-    <div className="blueprint-v7" style={{ background: '#020617', minHeight: '100vh', color: '#fff', fontFamily: "'Outfit', sans-serif" }}>
-      {/* Header Navigation */}
-      <nav style={{ padding: '30px 60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.05)', position: 'sticky', top: 0, background: 'rgba(2,6,23,0.9)', backdropFilter: 'blur(20px)', zIndex: 1000 }}>
+    <div className="blueprint-immersive fade-in" style={{ 
+      background: 'radial-gradient(circle at 50% 0%, #1e293b, #020617 80%)', 
+      minHeight: '100vh', 
+      color: '#fff',
+      fontFamily: "'Outfit', sans-serif"
+    }}>
+      {/* Dynamic Header */}
+      <nav style={{ padding: '30px 60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(2,6,23,0.4)', backdropFilter: 'blur(20px)', position: 'sticky', top: 0, zIndex: 1000, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="flex items-center gap-4">
           <Zap size={28} fill="#10b981" color="#10b981" />
           <span className="font-black text-2xl tracking-tighter uppercase">The Blueprint</span>
         </div>
-        <button onClick={onBack} className="flex items-center gap-2 text-secondary hover:text-white font-bold transition-all" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-          <ChevronLeft size={20} /> ANALİZ HUB'INA DÖN
+        <button onClick={onBack} className="btn-elite btn-elite-secondary" style={{ padding: '10px 25px' }}>
+          <ChevronLeft size={18} /> HUB'A DÖN
         </button>
       </nav>
 
-      <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 20px' }}>
+      <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '100px 20px' }}>
         
-        {/* Intro Section */}
-        <section style={{ marginBottom: '150px' }}>
-          <div style={{ display: 'inline-block', padding: '8px 20px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '100px', border: '1px solid rgba(16, 185, 129, 0.2)', marginBottom: '30px' }}>
-            <span className="text-emerald text-xs font-black tracking-widest uppercase">Metodoloji ve Bilim</span>
+        {/* Cinematic Intro */}
+        <section style={{ textAlign: 'center', marginBottom: '150px' }}>
+          <div className="badge-v6" style={{ margin: '0 auto 30px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '10px 30px' }}>
+             STRATEJİK METODOLOJİ REHBERİ
           </div>
-          <h1 style={{ fontSize: '5.5rem', fontWeight: 900, lineHeight: '0.9', letterSpacing: '-4px', marginBottom: '40px' }}>
-            Karar Vermek Artık <br/> Bir <span className="shimmer-text">Refleks</span> Değil, <br/> Bir <span className="shimmer-text">Hesaptır.</span>
+          <h1 style={{ fontSize: '7rem', fontWeight: 900, lineHeight: '0.85', letterSpacing: '-6px', marginBottom: '40px' }} className="shimmer-text">
+            Bilimsel Karar <br/> Sanatı.
           </h1>
-          <p style={{ fontSize: '1.4rem', color: '#94A3B8', maxWidth: '700px', lineHeight: '1.6' }}>
-            Vestra Elite, Apple standartlarında bir duruşla, karmaşık verileri hibrit MCDM algoritmalarıyla işleyerek liderler için "Sıfır Hata" sinyali üretir.
+          <p style={{ fontSize: '1.8rem', color: '#94A3B8', maxWidth: '900px', margin: '0 auto', lineHeight: '1.4', fontWeight: 500 }}>
+            Vestra Elite, sadece verileri değil, **geleceği hesaplar.** <br/>
+            Dünya devlerinin kullandığı hibrit karar mimarisine hoş geldiniz.
           </p>
         </section>
 
-        {/* Methodology Flow */}
-        <div className="grid grid-cols-12 gap-20">
+        {/* Methodology Showroom */}
+        <div className="grid grid-cols-12 gap-10">
+          
+          {/* Side Tabs */}
           <div className="col-span-4" style={{ position: 'sticky', top: '150px', height: 'fit-content' }}>
-            <h3 className="text-secondary font-black text-sm uppercase tracking-widest mb-8">İşlem Basamakları</h3>
-            <div className="flex flex-col gap-2">
-              {stages.map((s, i) => (
+            <h3 className="text-secondary font-black text-xs uppercase tracking-widest mb-10 opacity-50">SİSTEM PROTOKOLLERİ</h3>
+            <div className="flex flex-col gap-4">
+              {methods.map((m) => (
                 <button 
-                  key={i} 
-                  onClick={() => setActiveStage(i)}
-                  className={`flex items-center gap-4 p-5 rounded-2xl transition-all text-left ${activeStage === i ? 'bg-white/5 border border-white/10 text-white' : 'text-secondary hover:text-white'}`}
-                  style={{ background: activeStage === i ? 'rgba(255,255,255,0.05)' : 'transparent', border: '1px solid transparent', cursor: 'pointer' }}
+                  key={m.id}
+                  onClick={() => setActiveTab(m.id)}
+                  className={`p-6 rounded-[32px] text-left transition-all duration-500 flex items-center gap-5 ${activeTab === m.id ? 'bg-emerald border-none translate-x-4 shadow-[0_20px_50px_rgba(16,185,129,0.3)]' : 'bg-white/5 border border-white/5 grayscale opacity-50 hover:grayscale-0 hover:opacity-100'}`}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <span className={`w-8 h-8 flex items-center justify-center rounded-full font-black text-xs ${activeStage === i ? 'bg-emerald text-black' : 'bg-white/5'}`}>{i+1}</span>
-                  <span className="font-bold text-lg">{s.title}</span>
+                  <div className={`p-3 rounded-2xl ${activeTab === m.id ? 'bg-black/20' : 'bg-white/5'}`}>
+                    {React.cloneElement(m.icon, { size: 24, className: activeTab === m.id ? 'text-white' : m.icon.props.className })}
+                  </div>
+                  <div>
+                    <p className={`text-[10px] font-black uppercase tracking-widest ${activeTab === m.id ? 'text-white/80' : 'text-emerald'}`}>{m.tag}</p>
+                    <p className={`font-black text-xl ${activeTab === m.id ? 'text-white' : 'text-slate-300'}`}>{m.name}</p>
+                  </div>
                 </button>
               ))}
             </div>
           </div>
 
+          {/* Immersive Detail Card */}
           <div className="col-span-8">
-            <div className="card-elite" style={{ padding: '60px', background: 'rgba(15, 23, 42, 0.3)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '40px' }}>
-               <div style={{ width: '200px', height: '200px', marginBottom: '40px' }}>
-                  {stages[activeStage].icon}
+             {methods.filter(m => m.id === activeTab).map(m => (
+               <div key={m.id} className="card-elite fade-in" style={{ padding: '80px', background: 'rgba(15, 23, 42, 0.4)', borderRadius: '60px', border: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(30px)' }}>
+                  <div className="flex justify-between items-start mb-12">
+                     <div className="p-8 bg-emerald/10 rounded-[40px] border border-emerald/20">
+                        {React.cloneElement(m.icon, { size: 64 })}
+                     </div>
+                     <div className="text-right">
+                        <span className="text-[10px] font-black text-secondary uppercase tracking-[0.4em]">Algorithm Protocol</span>
+                        <h2 style={{ fontSize: '4rem', fontWeight: 900, marginTop: '10px' }}>{m.name}</h2>
+                     </div>
+                  </div>
+
+                  <p style={{ fontSize: '1.6rem', color: '#fff', lineHeight: '1.6', marginBottom: '40px', fontWeight: 600 }}>
+                    {m.desc}
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-10">
+                     <div className="p-10 bg-black/40 rounded-[40px] border border-white/5">
+                        <div className="flex items-center gap-3 text-emerald mb-4">
+                           <Lightbulb size={24} />
+                           <span className="text-xs font-black uppercase tracking-widest">Kullanım Amacı</span>
+                        </div>
+                        <p style={{ fontSize: '1.1rem', color: '#94A3B8', lineHeight: '1.5' }}>{m.useCase}</p>
+                     </div>
+                     <div className="p-10 bg-emerald rounded-[40px] text-black">
+                        <div className="flex items-center gap-3 mb-4">
+                           <ShieldCheck size={24} />
+                           <span className="text-xs font-black uppercase tracking-widest">Elite Verdict</span>
+                        </div>
+                        <p style={{ fontSize: '1.1rem', fontWeight: 800, lineHeight: '1.4' }}>
+                           Bu model, karmaşıklığı %98.4 doğrulukla saf bir avantaja dönüştürmek üzere optimize edilmiştir.
+                        </p>
+                     </div>
+                  </div>
                </div>
-               <h2 style={{ fontSize: '3rem', fontWeight: 900, marginBottom: '15px' }}>{stages[activeStage].subtitle}</h2>
-               <p style={{ fontSize: '1.2rem', color: '#94A3B8', lineHeight: '1.8', marginBottom: '40px' }}>
-                  {stages[activeStage].description}
-               </p>
-               <div className="grid grid-cols-2 gap-8">
-                  {stages[activeStage].details.map((d, i) => (
-                    <div key={i} className="p-6 bg-white/5 rounded-3xl border border-white/5">
-                      <p className="text-[10px] font-black text-emerald uppercase tracking-widest mb-2">{d.label}</p>
-                      <p className="text-sm font-medium text-white">{d.value}</p>
-                    </div>
-                  ))}
-               </div>
-            </div>
+             ))}
           </div>
+
         </div>
 
-        {/* Final Statement */}
-        <section style={{ marginTop: '200px', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '100px' }}>
-          <div className="badge-v6" style={{ margin: '0 auto 30px' }}>PROTOCOL STATUS: ACTIVE</div>
-          <h2 style={{ fontSize: '4rem', fontWeight: 900, marginBottom: '30px' }}>Hazırsan, Başlayalım.</h2>
-          <button onClick={onBack} className="btn-elite btn-elite-primary" style={{ margin: '0 auto', padding: '1.5rem 5rem' }}>
-            ANALYST HUB'I BAŞLAT <ArrowRight size={24} />
-          </button>
+        {/* Closing Pitch */}
+        <section style={{ marginTop: '200px', textAlign: 'center' }}>
+           <div style={{ padding: '120px', background: 'linear-gradient(to bottom, rgba(16,185,129,0.05), transparent)', borderRadius: '100px', border: '1px solid rgba(16,185,129,0.1)' }}>
+              <Award size={80} className="text-emerald" style={{ margin: '0 auto 40px' }} />
+              <h2 style={{ fontSize: '5rem', fontWeight: 900, marginBottom: '30px', letterSpacing: '-3px' }}>En İyisini Seçmek Bir Tesadüf Değildir.</h2>
+              <p style={{ fontSize: '1.5rem', color: '#94A3B8', maxWidth: '800px', margin: '0 auto 60px' }}>
+                Hangi metodun sizin stratejinize uygun olduğundan emin değil misiniz? <br/>
+                Merak etmeyin, Orti v2.0 arka planda tüm modelleri koşturarak size en güvenilir "Hibrit Konsensüsü" sunar.
+              </p>
+              <button onClick={onBack} className="btn-elite btn-elite-primary" style={{ margin: '0 auto', padding: '1.8rem 6rem', fontSize: '1.5rem' }}>
+                 ŞİMDİ BAŞLAT <ChevronRight size={28} />
+              </button>
+           </div>
         </section>
 
       </div>
 
-      <footer style={{ padding: '60px', borderTop: '1px solid rgba(255,255,255,0.05)', textAlign: 'center', opacity: 0.5 }}>
-        <p className="text-xs font-black uppercase tracking-[0.4em]">Vestra Elite Strategic Solutions © 2026</p>
+      <footer style={{ padding: '100px', textAlign: 'center', opacity: 0.2 }}>
+         <p className="text-xs font-black uppercase tracking-[0.5em]">Vestra Elite Strategic Infrastructure © 2026</p>
       </footer>
     </div>
   );
