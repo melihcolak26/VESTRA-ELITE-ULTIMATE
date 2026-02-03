@@ -3,24 +3,20 @@ import './App.css'
 import Wizard from './components/Wizard'
 import Analyst from './components/Analyst'
 import Blueprint from './components/Blueprint'
-import { Zap, Play, Layout, Shield, Cpu, Lock, HelpCircle, Monitor, ArrowRight, Maximize2, Activity } from 'lucide-react'
+import { Zap, Layout, Shield, Cpu, Lock, ArrowRight, Maximize2, Activity } from 'lucide-react'
 
 function App() {
-  const [view, setView] = useState(() => localStorage.getItem('vestra_view') || 'landing')
-
-  useEffect(() => {
-    localStorage.setItem('vestra_view', view)
-  }, [view])
+  const [view, setView] = useState('landing')
 
   return (
     <div className="platform-root" style={{ background: '#020617', minHeight: '100vh', color: '#fff' }}>
       {view === 'landing' && (
-        <div className="landing-page fade-in">
-          <nav className="nav-elite" style={{ background: 'rgba(2,6,23,0.9)', padding: '25px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="landing-page">
+          <nav className="nav-elite" style={{ padding: '25px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
             <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div className="brand-v6">
                 <Zap color="#10b981" fill="#10b981" size={28} />
-                <span style={{ fontWeight: 900, fontSize: '1.5rem', marginLeft: '10px' }}>VESTRA <span style={{ color: '#10b981' }}>ELITE</span></span>
+                <span style={{ fontWeight: 900, fontSize: '1.5rem', marginLeft: '10px' }}>VESTRA ELITE</span>
               </div>
               <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
                 <button 
@@ -29,27 +25,20 @@ function App() {
                 >
                   The Blueprint
                 </button>
-                <button className="btn-elite btn-elite-primary" onClick={() => setView('analyst')}>GİRİŞ YAP</button>
+                <button className="btn-elite btn-elite-primary" style={{ background: '#fff', color: '#000', padding: '10px 20px', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setView('analyst')}>GİRİŞ YAP</button>
               </div>
             </div>
           </nav>
 
           <main className="container" style={{ textAlign: 'center', paddingTop: '150px' }}>
-            <div style={{ padding: '8px 25px', background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.2)', display: 'inline-flex', alignItems: 'center', gap: '8px', borderRadius: '100px', marginBottom: '30px' }}>
-               <Activity size={14} color="#10b981" /> <span style={{ fontSize: '0.7rem', fontWeight: 900, color: '#10b981' }}>MASTERING THE SCIENCE OF CHOICE</span>
-            </div>
-            <h1 className="shimmer-text" style={{ fontSize: '6rem', fontWeight: 900, letterSpacing: '-5px', lineHeight: '0.9', marginBottom: '30px' }}>
-              Decision <br/> Intelligence.
-            </h1>
-            <p style={{ fontSize: '1.5rem', color: '#94A3B8', maxWidth: '850px', margin: '0 auto 60px', lineHeight: '1.4' }}>
-              Karmaşık seçimleri matematiksel kesinliğe dönüştüren <br/> hibrit karar verme altyapısı.
-            </p>
+            <h1 style={{ fontSize: '4rem', fontWeight: 900, marginBottom: '20px' }}>Mastering the Choice.</h1>
+            <p style={{ fontSize: '1.2rem', color: '#94A3B8', marginBottom: '40px' }}>Karar Mimarlığı Ofisine Hoş Geldiniz.</p>
             <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-               <button className="btn-elite btn-elite-primary" style={{ padding: '20px 50px', fontSize: '1.1rem' }} onClick={() => setView('analyst')}>
-                 LANSMANI BAŞLAT <ArrowRight size={20} />
+               <button className="btn-elite btn-elite-primary" style={{ background: '#fff', color: '#000', padding: '20px 40px', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setView('analyst')}>
+                 BAŞLAT
                </button>
-               <button className="btn-elite btn-elite-secondary" style={{ padding: '20px 50px', fontSize: '1.1rem' }} onClick={() => setView('blueprint')}>
-                 THE BLUEPRINT <Maximize2 size={20} />
+               <button className="btn-elite" style={{ background: 'transparent', color: '#10b981', border: '1px solid #10b981', padding: '20px 40px', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setView('blueprint')}>
+                 THE BLUEPRINT
                </button>
             </div>
           </main>
