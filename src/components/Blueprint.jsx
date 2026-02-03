@@ -17,7 +17,7 @@ import {
 const Blueprint = ({ onBack }) => {
   return (
     <div className="fade-in" style={{ color: '#fff', paddingBottom: '100px' }}>
-      <nav className="nav-elite" style={{ position: 'fixed', width: '100%', top: 0, left: 0, z-index: 100 }}>
+      <nav className="nav-elite" style={{ position: 'fixed', width: '100%', top: 0, left: 0, zIndex: 100 }}>
         <div className="container flex justify-between items-center">
           <div className="brand-v6">
             <Zap size={28} fill="#10b981" color="#10b981" />
