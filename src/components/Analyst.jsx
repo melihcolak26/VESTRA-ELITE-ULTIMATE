@@ -28,7 +28,7 @@ import {
   Globe,
   Loader2
 } from 'lucide-react';
-import { topsis, edas, codas, calculateEntropyWeights, calculateCriticWeights } from '../engine/mcdm';
+import { topsis, edas, codas, moora, vikor, waspas, calculateEntropyWeights, calculateCriticWeights, calculateAhpWeights } from '../engine/mcdm';
 
 ChartJS.register(
   CategoryScale,
@@ -81,7 +81,11 @@ const Analyst = ({ onBack }) => {
     const beneficial = data.criteria.map(c => c.beneficial);
     if (activeRank === 'topsis') return topsis(data.matrix, weights, beneficial);
     if (activeRank === 'edas') return edas(data.matrix, weights, beneficial);
-    return codas(data.matrix, weights, beneficial);
+    if (activeRank === 'codas') return codas(data.matrix, weights, beneficial);
+    if (activeRank === 'moora') return moora(data.matrix, weights, beneficial);
+    if (activeRank === 'vikor') return vikor(data.matrix, weights, beneficial);
+    if (activeRank === 'waspas') return waspas(data.matrix, weights, beneficial);
+    return topsis(data.matrix, weights, beneficial);
   }, [data.matrix, weights, data.criteria, activeRank]);
 
   const updateMatrix = (i, j, val) => {
@@ -123,6 +127,17 @@ const Analyst = ({ onBack }) => {
             <select className="input-elite" style={{ width: '100%' }} value={activeWeight} onChange={e => setActiveWeight(e.target.value)}>
               <option value="entropy">Shannon Entropy</option>
               <option value="critic">CRITIC Method</option>
+            </select>
+          </div>
+          <div className="card-elite" style={{ padding: '15px' }}>
+            <label className="text-xs font-bold text-secondary mb-2 block">SIRALAMA MODELİ</label>
+            <select className="input-elite" style={{ width: '100%' }} value={activeRank} onChange={e => setActiveRank(e.target.value)}>
+              <option value="topsis">TOPSIS (Expert)</option>
+              <option value="edas">EDAS (Dynamic)</option>
+              <option value="codas">CODAS (Hybrid)</option>
+              <option value="moora">MOORA (Ratio)</option>
+              <option value="vikor">VIKOR (Compromise)</option>
+              <option value="waspas">WASPAS (Aggregated)</option>
             </select>
           </div>
         </nav>

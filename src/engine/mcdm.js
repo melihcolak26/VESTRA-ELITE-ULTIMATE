@@ -196,6 +196,75 @@ export const codas = (matrix, weights, beneficial) => {
   return { scores: h, ranking: getRanking(h) };
 };
 
+/**
+ * MOORA (Multi-Objective Optimization on the basis of Ratio Analysis)
+ */
+export const moora = (matrix, weights, beneficial) => {
+  const norm = normalizeVector(matrix);
+  const scores = norm.map(row => {
+    return row.reduce((sum, val, j) => {
+      return sum + (beneficial[j] ? 1 : -1) * val * weights[j];
+    }, 0);
+  });
+  return { scores, ranking: getRanking(scores) };
+};
+
+/**
+ * WASPAS (Weighted Aggregated Sum Product Assessment)
+ */
+export const waspas = (matrix, weights, beneficial) => {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const lambda = 0.5;
+  const norm = Array.from({ length: rows }, () => []);
+  for (let j = 0; j < cols; j++) {
+    const col = matrix.map(r => r[j]);
+    const max = Math.max(...col);
+    const min = Math.min(...col);
+    for (let i = 0; i < rows; i++) {
+      norm[i][j] = beneficial[j] ? matrix[i][j] / max : min / matrix[i][j];
+    }
+  }
+  const q1 = norm.map(r => r.reduce((s, v, j) => s + v * weights[j], 0));
+  const q2 = norm.map(r => r.reduce((p, v, j) => p * Math.pow(v, weights[j]), 1));
+  const scores = q1.map((v, i) => lambda * v + (1 - lambda) * q2[i]);
+  return { scores, ranking: getRanking(scores) };
+};
+
+/**
+ * VIKOR (Multi-criteria Optimization and Compromise Solution)
+ */
+export const vikor = (matrix, weights, beneficial) => {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const v = 0.5; // Weight of strategy
+  const fPlus = [], fMinus = [];
+  for (let j = 0; j < cols; j++) {
+    const col = matrix.map(r => r[j]);
+    fPlus[j] = beneficial[j] ? Math.max(...col) : Math.min(...col);
+    fMinus[j] = beneficial[j] ? Math.min(...col) : Math.max(...col);
+  }
+  const s = new Array(rows).fill(0);
+  const r = new Array(rows).fill(0);
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      const val = weights[j] * (fPlus[j] - matrix[i][j]) / (fPlus[j] - fMinus[j] || 1);
+      s[i] += val;
+      r[i] = Math.max(r[i], val);
+    }
+  }
+  const sPlus = Math.max(...s), sMinus = Math.min(...s);
+  const rPlus = Math.max(...r), rMinus = Math.min(...r);
+  const q = s.map((si, i) => {
+    const term1 = v * (si - sMinus) / (sPlus - sMinus || 1);
+    const term2 = (1 - v) * (r[i] - rMinus) / (rPlus - rMinus || 1);
+    return term1 + term2;
+  });
+  // In VIKOR, lower Q is better. We invert it for our getRanking function.
+  const invQ = q.map(v => 1 - v);
+  return { scores: invQ, ranking: getRanking(invQ) };
+};
+
 const getRanking = (scores) => {
   return scores
     .map((score, index) => ({ index, score }))
