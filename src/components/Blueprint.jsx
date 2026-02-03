@@ -1,177 +1,170 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   ChevronLeft, 
   Zap, 
   ArrowRight, 
-  Target, 
-  Brain, 
+  Compass, 
+  Layers, 
+  Layout, 
+  ShieldCheck, 
   Cpu, 
-  Layers,
-  ShieldCheck,
-  Compass,
-  ZapOff,
-  Lightbulb,
-  Gem,
-  CheckCircle2,
-  Activity,
-  ArrowUpRight,
-  ArrowDownRight,
-  Dna,
-  Workflow
+  Target, 
+  MousePointer2, 
+  LineChart, 
+  Box,
+  Ruler,
+  PenTool,
+  Grid
 } from 'lucide-react';
 
 const Blueprint = ({ onBack }) => {
+  const [activeTool, setActiveTool] = useState('objective');
+
   return (
-    <div className="blueprint-executive fade-in" style={{ background: '#020617', minHeight: '100vh', color: '#fff', paddingBottom: '150px', fontFamily: "'Outfit', sans-serif" }}>
-      {/* Executive Nav */}
-      <nav style={{ padding: '30px 60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(2,6,23,0.8)', borderBottom: '1px solid rgba(255,255,255,0.05)', position: 'sticky', top: 0, zIndex: 1000, backdropFilter: 'blur(20px)' }}>
-        <div className="flex items-center gap-4">
-          <Zap size={32} fill="#10b981" color="#10b981" />
+    <div className="blueprint-architect fade-in" style={{ 
+      background: '#020617', 
+      minHeight: '100vh', 
+      color: '#fff', 
+      fontFamily: "'Outfit', sans-serif",
+      backgroundImage: `radial-gradient(circle at 2px 2px, rgba(16, 185, 129, 0.05) 1px, transparent 0)`,
+      backgroundSize: '40px 40px'
+    }}>
+      {/* Technical Header */}
+      <nav style={{ padding: '25px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(16, 185, 129, 0.2)', position: 'sticky', top: 0, background: 'rgba(2,6,23,0.9)', zIndex: 1000, backdropFilter: 'blur(10px)' }}>
+        <div className="flex items-center gap-3">
+          <div style={{ border: '2px solid #10b981', padding: '5px' }}>
+            <Zap size={24} fill="#10b981" color="#10b981" />
+          </div>
           <div className="flex flex-col">
-            <span style={{ fontWeight: 900, fontSize: '1.5rem', letterSpacing: '-1px' }}>VESTRA <span style={{ color: '#10b981' }}>ELITE</span></span>
-            <span style={{ fontSize: '0.6rem', fontWeight: 700, opacity: 0.5, letterSpacing: '0.2em' }}>THE BLUEPRINT PROTOCOL</span>
+            <span style={{ fontWeight: 900, fontSize: '1.2rem', letterSpacing: '1px' }}>THE BLUEPRINT <span style={{ color: '#10b981' }}>v7.8</span></span>
+            <span style={{ fontSize: '0.5rem', fontWeight: 800, opacity: 0.5, letterSpacing: '0.3em' }}>TECHNICAL SPECIFICATIONS</span>
           </div>
         </div>
-        <button onClick={onBack} className="btn-elite btn-elite-secondary" style={{ padding: '12px 30px', borderRadius: '100px', fontSize: '0.8rem' }}>
-          <ChevronLeft size={18} /> HUB'A DÖN
+        <button onClick={onBack} className="btn-elite btn-elite-secondary" style={{ padding: '8px 25px', borderRadius: '4px', border: '1px solid #10b981', color: '#10b981' }}>
+          <ChevronLeft size={16} /> KOMUTA MERKEZİNE DÖN
         </button>
       </nav>
 
-      <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '100px 20px' }}>
+      <div className="container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '80px 20px' }}>
         
-        {/* Cinematic Header */}
-        <header style={{ textAlign: 'center', marginBottom: '150px' }}>
-          <div className="badge-v6" style={{ margin: '0 auto 30px', border: '1px solid #10b981', color: '#10b981', background: 'rgba(16,185,129,0.05)', padding: '8px 25px', borderRadius: '100px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-            <ShieldCheck size={14} /> <span style={{ fontSize: '0.7rem', fontWeight: 900 }}>SCIENTIFIC METHODOLOGY v7.5</span>
+        {/* Hero: The Architect's View */}
+        <section style={{ textAlign: 'center', marginBottom: '120px', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: '-50px', left: '50%', transform: 'translateX(-50%)', opacity: 0.1 }}>
+             <Grid size={400} strokeWidth={0.5} color="#10b981" />
           </div>
-          <h1 style={{ fontSize: '6rem', fontWeight: 900, lineHeight: '0.9', letterSpacing: '-5px', marginBottom: '40px' }} className="shimmer-text">
-            Karar Verme <br/> Teknolojisi.
+          <div className="badge-v6" style={{ margin: '0 auto 20px', border: '1px solid #10b981', color: '#10b981', borderRadius: '0', padding: '5px 20px' }}>
+             STRATEJİK PLANLAMA ÜSSÜ
+          </div>
+          <h1 style={{ fontSize: '6rem', fontWeight: 900, lineHeight: '1', letterSpacing: '-4px', marginBottom: '30px' }} className="shimmer-text">
+            The Blueprint.
           </h1>
-          <p style={{ fontSize: '1.5rem', color: '#94A3B8', maxWidth: '800px', margin: '0 auto', lineHeight: '1.4' }}>
-            Vestra Elite, Apple standartlarında bir duruşla, karmaşık verileri akademik kesinlikle işleyen dünyanın en gelişmiş hibrit MCDM motorudur.
+          <h2 style={{ fontSize: '1.8rem', color: '#94A3B8', fontWeight: 400, marginBottom: '50px' }}>
+            Her Büyük Karar Bir Plan ile Başlar.
+          </h2>
+          <p style={{ fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto 60px', opacity: 0.7, lineHeight: '1.6' }}>
+            Arabadan tedarikçiye, yatırımdan personel seçimine - doğru kararın mimarisini birlikte çizelim. 
+            Vestra Elite, belirsizliği matematiksel bir taslağa dönüştürür.
           </p>
-        </header>
+          <div className="flex gap-4 justify-center">
+             <button className="btn-elite btn-elite-primary" style={{ borderRadius: '0', padding: '15px 40px' }} onClick={onBack}>PLANIMI ÇİZ</button>
+             <button className="btn-elite btn-elite-secondary" style={{ borderRadius: '0', padding: '15px 40px' }}>DEMO İNCELE</button>
+          </div>
+        </section>
 
-        {/* Part 1: Weighting Engine */}
-        <section style={{ marginBottom: '200px' }}>
-           <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '60px' }}>
-              <div style={{ p: '15px', background: 'rgba(99,102,241,0.1)', borderRadius: '20px', color: '#6366f1' }}>
-                 <Brain size={40} />
-              </div>
-              <h2 style={{ fontSize: '3rem', fontWeight: 900 }}>Bölüm I: Ağırlıklandırma</h2>
+        {/* 3 Step Construction */}
+        <h3 style={{ textAlign: 'center', fontSize: '2rem', fontWeight: 900, marginBottom: '60px' }}>PLANINIZI 3 ADIMDA ÇİZİN</h3>
+        <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px', marginBottom: '150px' }}>
+           
+           <div className="card-elite" style={{ padding: '40px', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '0', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '0.6rem', opacity: 0.3 }}>SEC-01 / FOUNDATION</div>
+              <Ruler size={32} color="#10b981" style={{ marginBottom: '20px' }} />
+              <h4 style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '15px' }}>ADIM 1: TEMELİ ATIN</h4>
+              <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                 Alternatifleri ve kriterleri tanımlayın. Bu, planınızın taşıyıcı kolonlarıdır. 
+                 <br/><br/>
+                 <span style={{ color: '#10b981', fontWeight: 800 }}>Örn: 5 Gemi, 8 Teknik Kriter.</span>
+              </p>
            </div>
 
-           <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '30px' }}>
-              
-              {/* Entropy */}
-              <div className="card-elite" style={{ padding: '40px' }}>
-                 <div className="flex justify-between items-start mb-8">
-                    <Layers size={32} color="#10b981" />
-                    <span style={{ fontSize: '0.6rem', fontWeight: 900, background: 'rgba(16,185,129,0.1)', color: '#10b981', padding: '5px 12px', borderRadius: '50px' }}>OBJEKTİF ANALİZ</span>
-                 </div>
-                 <h3 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '20px' }}>Shannon Entropy</h3>
-                 <p style={{ color: '#94A3B8', lineHeight: '1.6', marginBottom: '25px' }}>
-                    Verideki belirsizliği ve kaos derecesini ölçer. Eğer alternatifler bir kriterde (örn: Fiyat) birbirine çok yakın değerlere sahipse, Entropy bu kriterin karar verici gücünü otomatik olarak düşürür. 
-                 </p>
-                 <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <p style={{ fontSize: '0.8rem', fontWeight: 800, color: '#10b981' }}>ORTE VERDICT:</p>
-                    <p style={{ fontSize: '0.85rem', italic: 'true', opacity: 0.8 }}>"Kanki, Entropy duygularla değil, verideki saf sinyalle ilgilenir. Gürültüyü temizler."</p>
-                 </div>
-              </div>
+           <div className="card-elite" style={{ padding: '40px', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '0', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '0.6rem', opacity: 0.3 }}>SEC-02 / ARCHITECTURE</div>
+              <PenTool size={32} color="#10b981" style={{ marginBottom: '20px' }} />
+              <h4 style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '15px' }}>ADIM 2: MİMARİYİ BELİRLEYİN</h4>
+              <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                 Hangi araçlarla inşa edeceksiniz? Ağırlıklandırma ve Sıralama modellerini seçin.
+                 <br/><br/>
+                 <span style={{ color: '#10b981', fontWeight: 800 }}>Örn: Entropy + WASPAS Hibriti.</span>
+              </p>
+           </div>
 
-              {/* CRITIC */}
-              <div className="card-elite" style={{ padding: '40px' }}>
-                 <div className="flex justify-between items-start mb-8">
-                    <ZapOff size={32} color="#6366f1" />
-                    <span style={{ fontSize: '0.6rem', fontWeight: 900, background: 'rgba(99,102,241,0.1)', color: '#6366f1', padding: '5px 12px', borderRadius: '50px' }}>İLİŞKİSEL ANALİZ</span>
-                 </div>
-                 <h3 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '20px' }}>CRITIC Method</h3>
-                 <p style={{ color: '#94A3B8', lineHeight: '1.6', marginBottom: '25px' }}>
-                    Kriterler arasındaki çatışmayı (conflict) ve korelasyonu baz alır. Birbiriyle zıt çalışan parametreler (Hız vs Yakıt) arasındaki en adil dengeyi kurarak çelişkileri avantaja çevirir.
-                 </p>
-                 <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <p style={{ fontSize: '0.8rem', fontWeight: 800, color: '#6366f1' }}>ORTE VERDICT:</p>
-                    <p style={{ fontSize: '0.85rem', italic: 'true', opacity: 0.8 }}>"Kriterlerin birbirini ezmesini engeller, aralarındaki gizli dengeyi matematiksel olarak korur."</p>
-                 </div>
-              </div>
+           <div className="card-elite" style={{ padding: '40px', border: '1px solid rgba(16,185,129,0.3)', borderRadius: '0', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: '10px', right: '10px', fontSize: '0.6rem', opacity: 0.3 }}>SEC-03 / INSIGHT</div>
+              <Target size={32} color="#10b981" style={{ marginBottom: '20px' }} />
+              <h4 style={{ fontWeight: 900, fontSize: '1.4rem', marginBottom: '15px' }}>ADIM 3: PLANI YORUMLAYIN</h4>
+              <p style={{ color: '#94A3B8', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                 Çizimler tamamlandı, karar net! Orti Elite Verdict ile karşılaştırmalı analizi inceleyin.
+                 <br/><br/>
+                 <span style={{ color: '#10b981', fontWeight: 800 }}>Sonuç: %98.4 Karar Güvenliği.</span>
+              </p>
+           </div>
 
-              {/* AHP */}
-              <div className="card-elite" style={{ padding: '40px' }}>
-                 <div className="flex justify-between items-start mb-8">
-                    <Workflow size={32} color="#f59e0b" />
-                    <span style={{ fontSize: '0.6rem', fontWeight: 900, background: 'rgba(245,158,11,0.1)', color: '#f59e0b', padding: '5px 12px', borderRadius: '50px' }}>KIMI AI POWERED</span>
-                 </div>
-                 <h3 style={{ fontSize: '2rem', fontWeight: 900, marginBottom: '20px' }}>AHP (Expert Mind)</h3>
-                 <p style={{ color: '#94A3B8', lineHeight: '1.6', marginBottom: '25px' }}>
-                    İnsan deneyimini ikili kıyaslama matrisine döker. Kimi AI entegrasyonumuz sayesinde, sistem binlerce akademik yayını süzerek sizin yerinize "Uzman Görüşü" üretebilir.
-                 </p>
-                 <div style={{ background: 'rgba(255,255,255,0.03)', padding: '20px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <p style={{ fontSize: '0.8rem', fontWeight: 800, color: '#f59e0b' }}>ORTE VERDICT:</p>
-                    <p style={{ fontSize: '0.85rem', italic: 'true', opacity: 0.8 }}>"İnsan aklının en rafine halini Kimi'nin hızıyla birleştiriyoruz. Sektörel deha budur."</p>
-                 </div>
-              </div>
+        </div>
 
+        {/* The Toolkit Matrix */}
+        <section style={{ padding: '80px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(16,185,129,0.1)' }}>
+           <h3 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '20px', textAlign: 'center' }}>MİMAR ARAÇ SETİ 🧰</h3>
+           <p style={{ textAlign: 'center', color: '#94A3B8', marginBottom: '60px' }}>Hangi Aracı Ne Zaman Kullanmalı?</p>
+
+           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '60px' }}>
+              <button onClick={() => setActiveTool('objective')} style={{ background: activeTool === 'objective' ? '#10b981' : 'transparent', border: '1px solid #10b981', color: activeTool === 'objective' ? '#000' : '#10b981', padding: '10px 30px', fontWeight: 900, cursor: 'pointer' }}>OBJEKTİF VERİLER</button>
+              <button onClick={() => setActiveTool('subjective')} style={{ background: activeTool === 'subjective' ? '#10b981' : 'transparent', border: '1px solid #10b981', color: activeTool === 'subjective' ? '#000' : '#10b981', padding: '10px 30px', fontWeight: 900, cursor: 'pointer' }}>KİŞİSEL ÖNCELİKLER</button>
+              <button onClick={() => setActiveTool('hybrid')} style={{ background: activeTool === 'hybrid' ? '#10b981' : 'transparent', border: '1px solid #10b981', color: activeTool === 'hybrid' ? '#000' : '#10b981', padding: '10px 30px', fontWeight: 900, cursor: 'pointer' }}>HİBRİT YAKLAŞIM</button>
+           </div>
+
+           <div className="card-elite" style={{ padding: '60px', borderRadius: '0', border: '1px dashed rgba(16,185,129,0.5)' }}>
+              {activeTool === 'objective' && (
+                <div className="fade-in">
+                   <h4 style={{ fontSize: '2rem', fontWeight: 900, color: '#10b981', marginBottom: '20px' }}>Entropy & CRITIC Modülü</h4>
+                   <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: '#94A3B8' }}>
+                      Kanki, eğer elinde sadece rakamlar varsa ve "benim fikrim değil, veriler konuşsun" diyorsan bu set tam sana göre. 
+                      Sistem verideki çeşitliliği (Entropy) ve kriter çatışmalarını (CRITIC) ölçerek sana matematiksel bir ağırlık merkezi çıkarır.
+                   </p>
+                </div>
+              )}
+              {activeTool === 'subjective' && (
+                <div className="fade-in">
+                   <h4 style={{ fontSize: '2rem', fontWeight: 900, color: '#10b981', marginBottom: '20px' }}>AHP & VIKOR Modülü</h4>
+                   <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: '#94A3B8' }}>
+                      "Tecrübem her şeyden önemli ama AI da beni desteklesin" dediğin an bu seti çekiyoruz. 
+                      AHP ile senin (veya Kimi AI'nın) uzman görüşünü ikili kıyaslamalarla sisteme işliyor, VIKOR ile en az pişmanlık duyacağın noktayı buluyoruz.
+                   </p>
+                </div>
+              )}
+              {activeTool === 'hybrid' && (
+                <div className="fade-in">
+                   <h4 style={{ fontSize: '2rem', fontWeight: 900, color: '#10b981', marginBottom: '20px' }}>CRITIC & WASPAS Modülü</h4>
+                   <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: '#94A3B8' }}>
+                      En "Elite" yaklaşım budur kanki. Hem veriler arası ilişkiyi koruyor, hem de akademik hassasiyeti en yüksek olan WASPAS ile final sıralamasını yapıyoruz. 
+                      Hata payının sıfıra en çok yaklaştığı bölge burasıdır.
+                   </p>
+                </div>
+              )}
            </div>
         </section>
 
-        {/* Part 2: Ranking Engine */}
-        <section>
-           <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '60px' }}>
-              <div style={{ p: '15px', background: 'rgba(16,185,129,0.1)', borderRadius: '20px', color: '#10b981' }}>
-                 <Cpu size={40} />
-              </div>
-              <h2 style={{ fontSize: '3rem', fontWeight: 900 }}>Bölüm II: Sıralama Modelleri</h2>
-           </div>
-
-           <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-              
-              <div className="card-elite" style={{ padding: '30px' }}>
-                 <Target size={24} color="#10b981" style={{ marginBottom: '20px' }} />
-                 <h4 style={{ fontWeight: 900, marginBottom: '10px' }}>TOPSIS & CODAS</h4>
-                 <p style={{ fontSize: '0.9rem', color: '#94A3B8', lineHeight: '1.5' }}>
-                    Geometrik mesafe bazlıdır. İdeal olanla gerçek arasındaki farkı milimetrik hesaplayarak sizi en iyiye ulaştırır.
-                 </p>
-              </div>
-
-              <div className="card-elite" style={{ padding: '30px' }}>
-                 <Compass size={24} color="#f43f5e" style={{ marginBottom: '20px' }} />
-                 <h4 style={{ fontWeight: 900, marginBottom: '10px' }}>VIKOR Protocol</h4>
-                 <p style={{ fontSize: '0.9rem', color: '#94A3B8', lineHeight: '1.5' }}>
-                    Uzlaşmacı çözümdür. "Minimum Pişmanlık" noktasına odaklanır. Riskli ve kritik dönüşüm kararları için idealdir.
-                 </p>
-              </div>
-
-              <div className="card-elite" style={{ padding: '30px' }}>
-                 <Gem size={24} color="#6366f1" style={{ marginBottom: '20px' }} />
-                 <h4 style={{ fontWeight: 900, marginBottom: '10px' }}>WASPAS Matrix</h4>
-                 <p style={{ fontSize: '0.9rem', color: '#94A3B8', lineHeight: '1.5' }}>
-                    Akademik hassasiyeti en yüksek modeldir. İki farklı matematiksel dünyayı birleştirerek %99.4 tutarlılık sağlar.
-                 </p>
-              </div>
-
-              <div className="card-elite" style={{ padding: '30px' }}>
-                 <Activity size={24} color="#0ea5e9" style={{ marginBottom: '20px' }} />
-                 <h4 style={{ fontWeight: 900, marginBottom: '10px' }}>EDAS & MOORA</h4>
-                 <p style={{ fontSize: '0.9rem', color: '#94A3B8', lineHeight: '1.5' }}>
-                    Ortalama çözümden sapmaları ve verimlilik oranlarını baz alır. Lojistik ve tedarik süreçlerinin global standardıdır.
-                 </p>
-              </div>
-
-           </div>
-        </section>
-
-        {/* Final CTA */}
-        <section style={{ textAlign: 'center', marginTop: '150px' }}>
-           <h2 style={{ fontSize: '4rem', fontWeight: 900, marginBottom: '30px' }}>Gelecek, Veriyle Değil <br/> Kararla İnşa Edilir.</h2>
-           <button onClick={onBack} className="btn-elite btn-elite-primary" style={{ padding: '20px 60px', fontSize: '1.2rem', borderRadius: '100px' }}>
-              ANALYST HUB'A GİRİŞ YAP <ArrowRight size={24} />
-           </button>
-        </section>
+        {/* Final Architectural Note */}
+        <div style={{ marginTop: '100px', textAlign: 'left', padding: '40px', borderLeft: '4px solid #10b981', background: 'rgba(16,185,129,0.02)' }}>
+           <p style={{ fontSize: '0.8rem', fontWeight: 900, color: '#10b981', marginBottom: '10px' }}>MİMARIN NOTU:</p>
+           <p style={{ fontSize: '1.1rem', italic: 'true', opacity: 0.8 }}>
+              "Karar vermek, bir binayı inşa etmek gibidir kanki. Eğer temelinde (Veri) ve iskeletinde (Algoritma) hata varsa, o karar çöker. 
+              Vestra Elite ile biz, senin için en sağlam kaleleri inşa ediyoruz."
+           </p>
+        </div>
 
       </div>
 
-      <footer style={{ padding: '100px', borderTop: '1px solid rgba(255,255,255,0.05)', textAlign: 'center', opacity: 0.3 }}>
-         <p style={{ fontSize: '0.8rem', fontWeight: 900, letterSpacing: '0.5em' }}>VESTRA ELITE SOLUTIONS © 2026</p>
+      <footer style={{ padding: '60px', textAlign: 'center', opacity: 0.2, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+         <p style={{ fontSize: '0.7rem', fontWeight: 900, letterSpacing: '0.5em' }}>VESTRA ELITE - MASTERING THE CHOICE © 2026</p>
       </footer>
     </div>
   );
