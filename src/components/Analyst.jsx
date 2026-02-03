@@ -143,13 +143,25 @@ const Analyst = ({ onBack }) => {
         </nav>
 
         <button className="btn-elite btn-elite-secondary mt-auto" onClick={onBack}>
-          <ChevronLeft size={18} /> Geri Dön
+          <ChevronLeft size={18} /> Ana Menü
         </button>
       </aside>
 
       <main className="content-hub" style={{ padding: '40px', overflowY: 'auto' }}>
         <header className="flex justify-between items-center mb-8">
-          <h2 className="font-black text-3xl">Karar Çalışma Alanı</h2>
+          <div className="flex items-center gap-6">
+             <button 
+                className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/5 transition-all text-secondary hover:text-white"
+                onClick={onBack}
+                title="Geri Dön"
+             >
+                <ChevronLeft size={24} />
+             </button>
+             <div>
+                <h2 className="font-black text-3xl">Karar Çalışma Alanı</h2>
+                <p className="text-secondary text-xs font-bold uppercase tracking-widest mt-1">Vestra Elite Command Center</p>
+             </div>
+          </div>
           <div className="flex gap-4">
              <div className="flex items-center gap-2 bg-white/5 p-2 px-4 rounded-2xl border border-white/10">
                 <Globe size={16} />

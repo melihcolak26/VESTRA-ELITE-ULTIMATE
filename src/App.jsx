@@ -3,7 +3,8 @@ import './App.css'
 import { DECISION_TEMPLATES } from './templates/data'
 import Wizard from './components/Wizard'
 import Analyst from './components/Analyst'
-import { Zap, Play, BarChart3, Shield, Cpu, Lock } from 'lucide-react'
+import Blueprint from './components/Blueprint'
+import { Zap, Play, BarChart3, Shield, Cpu, Lock, HelpCircle } from 'lucide-react'
 
 function App() {
   const [view, setView] = useState(() => localStorage.getItem('vestra_view') || 'landing')
@@ -31,9 +32,15 @@ function App() {
                   <span style={{ fontSize: '0.5rem', letterSpacing: '0.1em', opacity: 0.6, marginTop: '-4px', fontWeight: 'bold' }}>POWERED BY INTELLIGENCE ENGINE</span>
                 </div>
               </div>
-              <button className="btn-elite btn-elite-primary" style={{ padding: '10px 25px', fontSize: '0.9rem' }} onClick={() => setView('analyst')}>
-                GİRİŞ YAP
-              </button>
+              <div className="flex gap-8 items-center">
+                <ul className="nav-links" style={{ display: 'flex', gap: '25px', listStyle: 'none' }}>
+                  <li><a href="#" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 700, fontSize: '0.8rem' }} onClick={() => setView('blueprint')}>THE BLUEPRINT</a></li>
+                  <li><a href="#" style={{ color: '#94A3B8', textDecoration: 'none', fontWeight: 700, fontSize: '0.8rem' }} onClick={() => setView('analyst')}>ANALYST HUB</a></li>
+                </ul>
+                <button className="btn-elite btn-elite-primary" style={{ padding: '10px 25px', fontSize: '0.9rem' }} onClick={() => setView('analyst')}>
+                  GİRİŞ YAP
+                </button>
+              </div>
             </div>
           </nav>
 
@@ -71,6 +78,10 @@ function App() {
 
       {view === 'analyst' && (
         <Analyst onBack={() => setView('landing')} />
+      )}
+
+      {view === 'blueprint' && (
+        <Blueprint onBack={() => setView('landing')} />
       )}
     </div>
   )
