@@ -4,7 +4,7 @@ import {
   ShieldCheck, Cpu, Package, BarChart3, Star, Layers, Activity, 
   Search, Settings, Globe, Microscope, Scale, FileText, Layout,
   Compass, Hexagon, Binary, Terminal, Box, Boxes, Briefcase, 
-  ZapOff, Lock, Unlock, Eye, Sparkles, Target
+  ZapOff, Lock, Unlock, Eye, Sparkles, Target, Users
 } from 'lucide-react';
 import { 
   topsis, edas, codas, moora, vikor, waspas, 
@@ -53,7 +53,7 @@ const Blueprint = ({ onBack }) => {
       time: '12 Dakika', diff: 'Derinlikli', icon: <Boxes />,
       what: 'Öklid ve Taksi mesafelerini birleştirerek seçenekler arası farkı büyütür.', 
       how: 'Seçenekler birbirine çok yakınsa, vergi/maliyet gibi hassas farkları ortaya çıkarır.',
-      note: 'Kafa bakış giden seçenekler arasında kazananı netleştirmek için kullanılır.' 
+      note: 'Kafa kafaya giden seçenekler arasında kazananı netleştirmek için kullanılır.' 
     },
     { 
       code: 'R-MOA-07', name: 'MOORA-Ratio', cat: 'Oran Analizi', 
