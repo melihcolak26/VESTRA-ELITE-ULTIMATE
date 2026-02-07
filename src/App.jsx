@@ -3,6 +3,7 @@ import './App.css'
 import { DECISION_TEMPLATES } from './templates/data'
 import Wizard from './components/Wizard'
 import Analyst from './components/Analyst'
+import Blueprint from './components/Blueprint'
 import { Zap, Shield, Cpu, BarChart3, ChevronRight, Play, Globe, Lock, ArrowUpRight } from 'lucide-react'
 
 function App() {
@@ -32,8 +33,13 @@ function App() {
               <span className="logo-accent">VESTRA</span> <span className="text-white/20 font-light ml-1">v5.0</span>
             </div>
             <div className="d-flex align-items-center gap-5">
+              <button 
+                style={{ background: 'none', border: 'none', color: '#94A3B8', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: '2px' }} 
+                onClick={() => setView('blueprint')}
+              >
+                THE BLUEPRINT
+              </button>
               <a href="#" className="text-secondary text-sm font-bold hover:text-white transition-colors">Methodology</a>
-              <a href="#" className="text-secondary text-sm font-bold hover:text-white transition-colors">Enterprise</a>
               <button className="btn-premium" onClick={() => setView('analyst')}>
                 Get Started <ArrowUpRight size={16} />
               </button>
@@ -55,8 +61,8 @@ function App() {
                 <button className="btn-premium-lg" onClick={() => setView('analyst')}>
                    Launch Platform <Play size={18} fill="currentColor" />
                 </button>
-                <button className="btn-glass-lg" onClick={() => document.getElementById('features').scrollIntoView({behavior:'smooth'})}>
-                  Explore Features
+                <button className="btn-glass-lg" onClick={() => setView('blueprint')}>
+                  THE BLUEPRINT
                 </button>
               </div>
 
@@ -157,6 +163,10 @@ function App() {
 
       {view === 'analyst' && (
         <Analyst onBack={() => setView('landing')} />
+      )}
+
+      {view === 'blueprint' && (
+        <Blueprint onBack={() => setView('landing')} />
       )}
 
       <style jsx>{`
