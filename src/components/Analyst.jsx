@@ -41,7 +41,7 @@ ChartJS.register(
   Filler
 );
 
-const Analyst = ({ onBack }) => {
+const Analyst = ({ onBack, setView }) => {
   const [data, setData] = useState(() => {
     const saved = localStorage.getItem('vestra_analyst_data');
     return saved ? JSON.parse(saved) : {
@@ -103,7 +103,7 @@ const Analyst = ({ onBack }) => {
         <nav className="d-flex flex-column gap-2">
           <p className="text-xs font-bold text-secondary uppercase tracking-widest px-2">Main</p>
           <button className="nav-item active"><LayoutDashboard size={18} /> Analytics</button>
-          <button className="nav-item" onClick={() => onBack()}><Globe size={18} /> THE BLUEPRINT</button>
+          <button className="nav-item" onClick={() => setView('blueprint')}><Globe size={18} /> THE BLUEPRINT</button>
           <button className="nav-item"><Database size={18} /> Matrix</button>
           <button className="nav-item"><FileText size={18} /> Reports</button>
           

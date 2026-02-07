@@ -32,7 +32,13 @@ function App() {
               <div className="icon-glow-sm"><Zap size={22} fill="#10b981" color="#10b981" /></div>
               <span className="logo-accent" style={{ fontWeight: 900, fontSize: '1.4rem', letterSpacing: '-1px' }}>VESTRA INTELLIGENCE PRO</span>
             </div>
-            <div className="d-flex align-items-center gap-6">
+            <div className="d-flex align-items-center gap-4">
+              <button 
+                style={{ background: 'none', border: 'none', color: '#94A3B8', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: '2px', textTransform: 'uppercase' }} 
+                onClick={() => setView('blueprint')}
+              >
+                The Blueprint
+              </button>
               <button 
                 className="btn-glass-sm"
                 style={{ background: 'rgba(255,255,255,0.05)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 20px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
@@ -110,7 +116,7 @@ function App() {
       )}
 
       {view === 'analyst' && (
-        <Analyst onBack={() => setView('landing')} />
+        <Analyst onBack={() => setView('landing')} setView={setView} />
       )}
 
       {view === 'blueprint' && (
