@@ -9,6 +9,11 @@
   --text-secondary: #94a3b8;
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-highlight: rgba(255, 255, 255, 0.03);
+
+  /* Blueprint v8.5 Design Tokens */
+  --bp-grid: rgba(16, 185, 129, 0.08); /* Neon Green Grid */
+  --bp-line: rgba(16, 185, 129, 0.15);
+  --bp-card-bg: rgba(10, 10, 10, 0.8);
 }
 
 body {
@@ -161,3 +166,121 @@ body {
   color: #fff;
   text-transform: uppercase;
 }
+
+/* THE BLUEPRINT Styles */
+.mono { font-family: 'JetBrains Mono', monospace; }
+.technical { font-family: 'Courier New', monospace; }
+
+.blueprint-paper-v8 {
+  background-color: #000000;
+  background-image: 
+    linear-gradient(var(--bp-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bp-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  min-height: 100vh;
+  position: relative;
+}
+
+.blueprint-paper-v8::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.8) 100%);
+  pointer-events: none;
+}
+
+.blueprint-border {
+  border: 1px solid var(--bp-line);
+  position: relative;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.blueprint-card {
+  background: var(--bp-card-bg);
+  border: 1px solid var(--bp-line);
+  backdrop-filter: blur(20px);
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blueprint-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 50px rgba(16, 185, 129, 0.2);
+  transform: translateY(-8px);
+}
+
+.blueprint-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.blueprint-table th {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--primary);
+  padding: 25px;
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  border-bottom: 1px solid var(--bp-line);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.blueprint-table td {
+  padding: 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.95rem;
+  color: #e2e8f0;
+}
+
+.btn-bp-v8 {
+  padding: 18px 45px;
+  background: var(--primary);
+  color: #000;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 900;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-bp-outline-v8 {
+  padding: 18px 45px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.2);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.badge-v8 {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--bp-line);
+  color: var(--primary);
+  padding: 8px 20px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  border-radius: 4px;
+}
+
+.measure-h {
+  position: relative;
+  height: 1px;
+  background: var(--bp-line);
+  margin: 40px 0;
+}
+.measure-h::before, .measure-h::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  width: 1px;
+  height: 11px;
+  background: var(--primary);
+}
+.measure-h::after { right: 0; }
