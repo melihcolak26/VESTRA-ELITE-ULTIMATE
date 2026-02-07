@@ -30,7 +30,7 @@ function App() {
           <nav className="nav-premium">
             <div className="logo-container">
               <div className="icon-glow-sm"><Zap size={22} fill="#10b981" color="#10b981" /></div>
-              <span className="logo-accent">VESTRA</span> <span className="text-white/20 font-light ml-1">v5.0</span>
+              <span className="logo-accent">VESTRA INTELLIGENCE PRO</span>
             </div>
             <div className="d-flex align-items-center gap-5">
               <button 
@@ -39,9 +39,8 @@ function App() {
               >
                 THE BLUEPRINT
               </button>
-              <a href="#" className="text-secondary text-sm font-bold hover:text-white transition-colors">Methodology</a>
               <button className="btn-premium" onClick={() => setView('analyst')}>
-                Get Started <ArrowUpRight size={16} />
+                Launch Analyst <ArrowUpRight size={16} />
               </button>
             </div>
           </nav>
@@ -51,7 +50,7 @@ function App() {
               <div className="d-flex justify-content-center mb-6">
                  <div className="badge-master">Master Decision Suite</div>
               </div>
-              <h1 className="heading-premium shimmer-text">Kritik Kararlar için<br/>Bilimsel Analitik.</h1>
+              <h1 className="heading-premium shimmer-text">Elite Kararlar için<br/>Bilimsel Analitik.</h1>
               <p className="hero-p">
                 Melih Çolak & Orti tarafından tasarlanan Vestra, karmaşık stratejik seçimleri 
                 <strong> 12+ hibrit MCDM algoritması</strong> ile matematiksel bir kesinliğe dönüştürür.
@@ -59,7 +58,7 @@ function App() {
               
               <div className="d-flex justify-content-center gap-4 mt-10">
                 <button className="btn-premium-lg" onClick={() => setView('analyst')}>
-                   Launch Platform <Play size={18} fill="currentColor" />
+                   Sistemi Başlat <Play size={18} fill="currentColor" />
                 </button>
                 <button className="btn-glass-lg" onClick={() => setView('blueprint')}>
                   THE BLUEPRINT
