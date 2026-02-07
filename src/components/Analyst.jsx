@@ -24,7 +24,8 @@ import {
   Settings,
   Share2,
   Trash2,
-  AlertCircle
+  AlertCircle,
+  Globe
 } from 'lucide-react';
 import { topsis, edas, codas, calculateEntropyWeights, calculateCriticWeights } from '../engine/mcdm';
 
@@ -102,6 +103,7 @@ const Analyst = ({ onBack }) => {
         <nav className="d-flex flex-column gap-2">
           <p className="text-xs font-bold text-secondary uppercase tracking-widest px-2">Main</p>
           <button className="nav-item active"><LayoutDashboard size={18} /> Analytics</button>
+          <button className="nav-item" onClick={() => onBack()}><Globe size={18} /> THE BLUEPRINT</button>
           <button className="nav-item"><Database size={18} /> Matrix</button>
           <button className="nav-item"><FileText size={18} /> Reports</button>
           
