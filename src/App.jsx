@@ -34,13 +34,13 @@ function App() {
             </div>
             <div className="d-flex align-items-center gap-6">
               <button 
-                style={{ background: 'none', border: 'none', color: '#10b981', fontWeight: 900, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: '2px' }} 
+                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: '2px' }} 
                 onClick={() => setView('blueprint')}
               >
                 THE BLUEPRINT
               </button>
               <button className="btn-premium" onClick={() => setView('analyst')}>
-                ANALYST MODE <ArrowUpRight size={16} />
+                Launch Analyst
               </button>
             </div>
           </nav>
@@ -62,9 +62,6 @@ function App() {
                 </button>
                 <button className="btn-glass-lg" onClick={() => setView('analyst')}>
                   Profesyonel Panel
-                </button>
-                <button className="btn-glass-lg" style={{ borderColor: '#10b981', color: '#10b981' }} onClick={() => setView('blueprint')}>
-                  THE BLUEPRINT
                 </button>
               </div>
 
