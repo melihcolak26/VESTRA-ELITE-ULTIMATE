@@ -10,34 +10,33 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Blueprint = ({ onBack }) => {
   const [selectedCase, setSelectedCase] = useState(null);
-  const [methodFilter, setMethodFilter] = useState('all');
 
   const methods = [
     { 
       id: 'entropy',
       name: 'SHANNON ENTROPY', 
-      cat: 'Objektif Kriter Ağırlıklandırma', 
+      cat: 'Ağırlıklandırma / Objektif Varyans Analizi', 
       complexity: 'Orta', 
       time: '5-7 Dakika', 
       accuracy: 'Yüksek',
       icon: <Database />,
-      definition: 'Shannon Entropy, bilgi teorisine dayanan objektif bir ağırlıklandırma yöntemidir. Veri setindeki değişkenlik (varyans) düzeyine göre kriter ağırlıklarını belirler. Düşük varyans = düşük önem.',
+      definition: 'Kriterlerin bilgi içeriğini istatistiksel olarak ölçer. Yüksek varyans gösteren kriterlere (karar vermede ayırt edici olan) daha yüksek ağırlık atanır. Veriye dayalı, uzman müdahalesi gerektirmez.',
       logic: [
         'Karar matrisinin normalize edilmesi (probabilistic dönüşüm)',
         'Her kriter için entropi değeri hesaplama: ej = -k Σ pij ln(pij)',
         'Çeşitlilik katsayısı: dj = 1 - ej',
         'Normalize ağırlık: wj = dj / Σ dj'
       ],
-      applications: ['Finansal Portföy Optimizasyonu', 'Tedarikçi Performans Değerlendirmesi', 'Kalite Kontrol Parametreleri'],
-      strengths: ['Tamamen objektif, insan önyargısı yok', 'Hızlı hesaplama', 'Çok sayıda alternatif için uygun'],
+      applications: ['Finansal portföy optimizasyonu', 'Tedarikçi performans değerlendirmesi', 'Kalite kontrol parametreleri'],
+      strengths: ['Tamamen objektif, insan önyargısı yok', 'Hızlı hesaplama', 'Çok sayıda alternatif ve kriter için uygun'],
       limitations: ['Stratejik önemi göz ardı edebilir', 'Veri kalitesine bağımlı'],
       optimal: 'Objektif karar gerektiğinde, veri setinde anlamlı varyasyon olduğunda ve stratejik önceliklerin net olmadığı durumlarda tercih edilir.',
-      combinations: 'TOPSIS, EDAS, MOORA'
+      combinations: 'TOPSIS, EDAS, MOORA (hızlı sonuç için)'
     },
     { 
       id: 'critic',
       name: 'CRITIC', 
-      cat: 'Korelasyon-Duyarlı Ağırlıklandırma', 
+      cat: 'Ağırlıklandırma / Korelasyon-Duyarlı Analiz', 
       complexity: 'Yüksek', 
       time: '10-12 Dakika', 
       accuracy: 'Çok Yüksek',
@@ -49,37 +48,37 @@ const Blueprint = ({ onBack }) => {
         'Çatışma bilgisi: Cj = σj Σ (1 - rjk)',
         'Ağırlıklandırma: wj = Cj / Σ Cj'
       ],
-      applications: ['Ar-Ge Projelerinde Kriter Karmaşasını Önleme', 'İnsan Kaynakları Yetkinlik Değerlendirmesi', 'Çok Parametreli Mühendislik Tasarımları'],
-      strengths: ['Kriterler arası çatışmayı tespit eder', 'Dengeli ağırlıklar sağlar'],
-      limitations: ['Hesaplama yükü fazladır', 'Veri setinin yapısına hassastır'],
-      optimal: 'Kriterlerin birbiriyle çeliştiği ve korelasyonun yüksek olduğu karmaşık problemlerde kullanılır.',
+      applications: ['Ar-Ge projelerinde kriter karmaşasını önleme', 'İnsan kaynakları yetkinlik değerlendirmesi', 'Çok parametreli mühendislik tasarımları'],
+      strengths: ['Kriterler arası çatışmayı tespit eder', 'Daha dengeli ağırlıklar verir'],
+      limitations: ['Hesaplama yükü fazladır', 'Büyük veri setlerinde teknik yoğunluk artar'],
+      optimal: 'Kriterlerin birbiriyle yüksek korelasyon gösterdiği ve bağımsızlık analizinin kritik olduğu senaryolarda kullanılır.',
       combinations: 'CODAS, WASPAS, MOORA'
     },
     { 
       id: 'ahp',
-      name: 'AHP Protocol', 
-      cat: 'Hiyerarşik / Uzman Görüşü', 
+      name: 'AHP (Analytic Hierarchy Process)', 
+      cat: 'Ağırlıklandırma / Hiyerarşik Karşılaştırma', 
       complexity: 'Yüksek', 
       time: '15-20 Dakika', 
       accuracy: 'Yüksek',
       icon: <Layers />,
-      definition: 'Niteliksel uzman değerlerini niceliksel ağırlıklara dönüştürür. İkili karşılaştırma matrisleri ve tutarlılık analizi ile güvenilir önceliklendirme sağlar.',
+      definition: 'Niteliksel uzman değerlerini niceliksel ağırlıklara dönüştürür. İkili karşılaştırma matrisleri ve tutarlılık analizi (Consistency Ratio < 0.10) ile güvenilir önceliklendirme sağlar.',
       logic: [
         'Saaty ölçeği (1-9) ile ikili karşılaştırma matrisi oluşturma',
         'Özvektör hesaplama (Eigenvector) ile yerel öncelikler',
         'Tutarlılık oranı (CR) kontrolü: CR = CI/RI',
         'Global ağırlıkların hesaplanması'
       ],
-      applications: ['Stratejik Planlama', 'Lokasyon Seçimi', 'Kamu Politikaları', 'Yatırım Kararları'],
+      applications: ['Stratejik planlama', 'Lokasyon seçimi', 'Kamu politikaları', 'Yatırım kararları'],
       strengths: ['Kurum önceliklerini yansıtır', 'Nitel kriterleri sayısallaştırır'],
-      limitations: ['Öznel yargı içerir', 'Tutarlılık yakalamak zaman alıcıdır'],
-      optimal: 'Uzman tecrübesinin ve kurum vizyonunun sayısal veriden daha öncelikli olduğu durumlarda kullanılır.',
+      limitations: ['Öznel yargı içerir', 'Büyük kriter setlerinde tutarlılık zordur'],
+      optimal: 'Uzman görüşünün ve stratejik vizyonun sayısal veriden daha öncelikli olduğu yapısal kararlarda kullanılır.',
       combinations: 'VIKOR, TOPSIS, MOORA'
     },
     { 
       id: 'topsis',
-      name: 'TOPSIS Elite', 
-      cat: 'İdeal Uzaklık Metodu', 
+      name: 'TOPSIS', 
+      cat: 'Sıralama / İdeal Uzaklık Metodu', 
       complexity: 'Orta', 
       time: '5-7 Dakika', 
       accuracy: 'Yüksek',
@@ -88,19 +87,19 @@ const Blueprint = ({ onBack }) => {
       logic: [
         'Vektör normalizasyonu ve ağırlıklandırma',
         'İdeal (A+) ve anti-ideal (A-) çözümlerin belirlenmesi',
-        'Euclidean mesafe hesabı',
-        'Bağıl yakınlık katsayısı ile sıralama'
+        'Euclidean mesafe hesabı: Di+ = √Σ (vij - vj+)²',
+        'Bağıl yakınlık: Ci = Di- / (Di+ + Di-)'
       ],
-      applications: ['Ekipman Seçimi', 'Yazılım Karşılaştırmaları', 'Genel Amaçlı Karar Problemleri'],
-      strengths: ['En yaygın kullanılan yöntem', 'Anlaşılır sonuçlar', 'Dengeli yaklaşım'],
+      applications: ['Ekipman seçimi', 'Yazılım karşılaştırmaları', 'Bina/lokasyon tercihleri'],
+      strengths: ['En yaygın kullanılan metot', 'Anlaşılır sonuçlar', 'Dengeli yaklaşım'],
       limitations: ['Kriterler arası korelasyonu yok sayar'],
-      optimal: 'Dengeli, standart ve kabul görmüş bir sıralama gerektiğinde ilk tercihtir.',
+      optimal: 'Dengeli ve standart bir sıralama algoritması arandığında en güvenilir seçenektir.',
       combinations: 'Entropy, CRITIC, AHP'
     },
     { 
       id: 'edas',
-      name: 'EDAS Method', 
-      cat: 'Ortalama Sapma Analizi', 
+      name: 'EDAS', 
+      cat: 'Sıralama / Ortalama Sapma Analizi', 
       complexity: 'Orta', 
       time: '8-10 Dakika', 
       accuracy: 'Yüksek',
@@ -108,20 +107,20 @@ const Blueprint = ({ onBack }) => {
       definition: 'İdeal çözüm yerine ortalama çözüme olan uzaklığı temel alır. Uç değerlere (outlier) karşı daha robust (dayanıklı) sonuçlar üretir.',
       logic: [
         'Ortalama çözüm (AV) hesabı her kriter için',
-        'Pozitif (PDA) ve Negatif (NDA) sapma hesabı',
+        'Pozitif (PDA) ve Negatif (NDA) uzaklık: PDA = max(0, (AV - x)/AV)',
         'Ağırlıklandırılmış toplam skorlar',
         'Normalizasyon ve değerlendirme skoru (AS)'
       ],
-      applications: ['Riskli Yatırım Kararları', 'Volatil Veri Setleri', 'Finansal Belirsizlik Altında Kararlar'],
-      strengths: ['Outlier değerlere karşı dirençli', 'Stabil sonuçlar'],
-      limitations: ['Ortalama değerin anlamsız olduğu küçük setlerde zayıftır'],
-      optimal: 'Veri setinde aşırı uç değerler (aykırı veriler) olduğunda tercih edilir.',
+      applications: ['Riskli yatırım kararları', 'Volatil veri setleri', 'Finansal belirsizlik altında kararlar'],
+      strengths: ['Outlier\'lara karşı dirençli', 'Stabil sonuçlar'],
+      limitations: ['Ortalama değerin saptığı küçük örneklemlerde yanılabilir'],
+      optimal: 'Veri setinde anomali veya aşırı uç değerler (aykırı veriler) olduğunda tercih edilir.',
       combinations: 'Entropy, CRITIC'
     },
     { 
       id: 'codas',
-      name: 'CODAS Matrix', 
-      cat: 'Hibrit Mesafe Analizi', 
+      name: 'CODAS', 
+      cat: 'Sıralama / Hibrit Mesafe Analizi', 
       complexity: 'Yüksek', 
       time: '10-12 Dakika', 
       accuracy: 'Çok Yüksek',
@@ -133,16 +132,16 @@ const Blueprint = ({ onBack }) => {
         'Eşik değer (Tau) üzerinden karşılaştırma matrisi',
         'Net değerlendirme skoru'
       ],
-      applications: ['Kritik Altyapı Projeleri', 'Hassas Mühendislik Kararları', 'Yüksek Riskli Yatırımlar'],
-      strengths: ['İki farklı mesafe metriki kullanımı', 'Çok yüksek ayırt edicilik'],
-      limitations: ['Eşik değer seçimine duyarlıdır'],
-      optimal: 'Alternatiflerin performans değerlerinin birbirine çok yakın olduğu hassas durumlarda kullanılır.',
+      applications: ['Kritik altyapı projeleri', 'Hassas mühendislik kararları', 'Yüksek riskli yatırımlar'],
+      strengths: ['İki farklı mesafe metriki kullanımı', 'En güvenilir sonuçları verir'],
+      limitations: ['Hesaplama yoğunluğu fazladır'],
+      optimal: 'Alternatiflerin performans değerlerinin birbirine çok yakın olduğu hassas mühendislik kararlarında kullanılır.',
       combinations: 'CRITIC'
     },
     { 
       id: 'moora',
-      name: 'MOORA-Ratio', 
-      cat: 'Oransal Optimizasyon', 
+      name: 'MOORA', 
+      cat: 'Sıralama / Oransal Optimizasyon', 
       complexity: 'Düşük', 
       time: '5-6 Dakika', 
       accuracy: 'Orta-Yüksek',
@@ -153,16 +152,16 @@ const Blueprint = ({ onBack }) => {
         'Yi = Σ (Fayda) / Σ (Maliyet) formülasyonu',
         'Orana göre sıralama'
       ],
-      applications: ['Lojistik Operasyonlar', 'Hızlı Tedarikçi Değerlendirme', 'Operasyonel Verimlilik'],
-      strengths: ['Basit ve hızlı', 'Endüstri standardı performans'],
-      limitations: ['Karmaşık hiyerarşileri modelleyemez'],
-      optimal: 'Hızın doğruluktan bir adım önde olduğu acil operasyonel kararlarda idealdir.',
+      applications: ['Lojistik operasyonlar', 'Hızlı tedarikçi değerlendirme', 'Operasyonel verimlilik analizi'],
+      strengths: ['Basit, hızlı ve etkili', 'Endüstri standardı (özellikle SCM)'],
+      limitations: ['Hiyerarşik yapıları desteklemez'],
+      optimal: 'Hızın doğruluktan daha önemli olduğu, büyük ölçekli ve hızlı operasyonel kararlarda idealdir.',
       combinations: 'CRITIC, AHP'
     },
     { 
       id: 'waspas',
-      name: 'WASPAS Matrix', 
-      cat: 'Hibrit Agregasyon Modeli', 
+      name: 'WASPAS', 
+      cat: 'Sıralama / Hibrit Hassasiyet Modeli', 
       complexity: 'Çok Yüksek', 
       time: '12-15 Dakika', 
       accuracy: 'Maksimum',
@@ -173,10 +172,10 @@ const Blueprint = ({ onBack }) => {
         'WPM skoru: Π xij^wj',
         'Birleşik skor: λ · WSM + (1-λ) · WPM (λ=0.5)'
       ],
-      applications: ['Akademik Araştırmalar', 'Yüksek Hassasiyetli Mühendislik', 'Bilimsel Karar Destek'],
-      strengths: ['En yüksek doğruluk oranı', 'Hata payını minimize eder'],
-      limitations: ['Uygulama zorluğu ve matematiksel yoğunluk'],
-      optimal: 'Hata payının kabul edilemez olduğu yüksek maliyetli veya hayati kararlarda kullanılır.',
+      applications: ['Akademik araştırmalar', 'Yüksek hassasiyetli mühendislik seçimleri', 'Bilimsel karar destek sistemleri'],
+      strengths: ['En yüksek doğruluk oranı', 'Tutarlı sonuçlar'],
+      limitations: ['Matematiksel olarak en yoğun modeldir'],
+      optimal: 'Hata payının sıfıra yakın olması gereken stratejik yatırım veya teknik tasarım kararlarında kullanılır.',
       combinations: 'CRITIC'
     }
   ];
@@ -185,8 +184,9 @@ const Blueprint = ({ onBack }) => {
     { 
       id: 'PROJE #01', 
       name: 'Endüstriyel Hammadde Tedarik Seçimi', 
-      sector: 'Üretim / Kimya', 
-      description: '6 farklı çelik tedarikçisinin maliyet, kalite ve lojistik parametrelerine göre optimizasyonu.',
+      sector: 'İmalat / Otomotiv', 
+      owner: 'Satın Alma Departmanı',
+      description: '6 farklı çelik tedarikçisinin maliyet, kalite (ASTM standartları) ve lojistik performansına göre optimizasyonu.',
       icon: <Package />,
       matrix: [
         { alt: 'Tedarikçi A', cost: '45.50', time: '3', quality: '95', stock: '10.000' },
@@ -195,46 +195,48 @@ const Blueprint = ({ onBack }) => {
         { alt: 'Tedarikçi D', cost: '41.25', time: '7', quality: '85', stock: '20.000' }
       ],
       analysis: {
-        weights: 'Entropy: Maliyet (0.35), Süre (0.28), Kalite (0.22), Kapasite (0.15)',
-        topsis: '1. Tedarikçi C (0.78), 2. Tedarikçi A (0.72)',
+        weights: 'Entropy Ağırlıkları: Maliyet (0.35), Süre (0.28), Kalite (0.22), Kapasite (0.15)',
+        results: '1. Türkiye C (0.78), 2. Tedarikçi A (0.72)',
         insight: 'Maliyet ve Kalite arasında negatif korelasyon (-0.82) tespit edildi. CRITIC bu kriterlere yüksek ayırt edicilik atadı.',
-        gain: '%12 maliyet tasarrufu + %18 teslimat performans artışı.'
+        gain: '%12 maliyet tasarrufu + %18 teslimat performans artışı (yıllık bazda).'
       }
     },
     { 
       id: 'PROJE #02', 
-      name: 'Kurumsal Yatırım Portföyü', 
-      sector: 'Finans', 
-      description: 'Dengeli risk-getiri profili için 6 farklı finansal varlığın hiyerarşik analizi.',
-      icon: <TrendingUp />,
+      name: 'Yönetici Pozisyonu Değerlendirme', 
+      sector: 'İnsan Kaynakları', 
+      owner: 'İK Direktörü',
+      description: 'Deneyim, teknik sınav, mülakat performansı ve liderlik yetkinliklerine göre 6 yönetici adayının analizi.',
+      icon: <Users />,
       matrix: [
-        { alt: 'Hisse A', return: '18.5%', vol: '22.3%', liq: '1', sharpe: '0.83', esg: '72' },
-        { alt: 'Tahvil C', return: '8.5%', vol: '5.2%', liq: '3', sharpe: '1.63', esg: '90' },
-        { alt: 'Fon D', return: '12.0%', vol: '12.5%', liq: '5', sharpe: '0.96', esg: '78' }
+        { alt: 'Aday 1', cost: '8 Yıl', time: '85', quality: '92', stock: '88' },
+        { alt: 'Aday 4', cost: '10 Yıl', time: '82', quality: '95', stock: '85' },
+        { alt: 'Aday 2', cost: '12 Yıl', time: '78', quality: '85', stock: '82' }
       ],
       analysis: {
-        weights: 'AHP: Getiri (0.40), Risk (0.35), Likidite (0.25)',
-        edas: 'Portföy Stabilitesi: Tahvil C ağırlıklı yapı önerildi.',
-        insight: 'EDAS analizi uç değer (Kripto varlıklar) riskini elimine ederek robust bir yapı kurdu.',
-        gain: '%14.2 beklenen getiri, %11.5 hedef volatilite.'
+        weights: 'AHP Ağırlıkları: Mülakat (0.30), Teknik (0.25), Liderlik (0.25), Deneyim (0.20)',
+        results: 'Aday 4 (Skor: 0.81) - Dengeli Yetkinlik Profili',
+        insight: 'VIKOR analizi ile uzlaşmacı en iyi aday olarak 1. Aday 1 (0.29) seçilmiştir.',
+        gain: 'Doğru yerleştirme ile ekip verimliliğinde %22 artış beklentisi.'
       }
     },
     { 
       id: 'PROJE #03', 
-      name: 'Kara Taşımacılığı Partner Seçimi', 
-      sector: 'Lojistik', 
-      description: 'Maliyet, süre ve hasar oranlarına göre 6 ana nakliye firmasının değerlendirilmesi.',
+      name: 'Kara Taşımacılığı Firması Seçimi', 
+      sector: 'Lojistik / SCM', 
+      owner: 'Tedarik Zinciri Müdürü',
+      description: 'Güzergah maliyeti, taşıma süresi ve hasar oranlarına göre 9 3PL lojistik partnerinin karşılaştırılması.',
       icon: <Globe />,
       matrix: [
-        { alt: 'Firma X1', cost: '28.500', time: '48s', damage: '0.8', age: '3.5', sig: 'Tam' },
-        { alt: 'Firma X3', cost: '31.000', time: '42s', damage: '0.3', age: '2.0', sig: 'Tam' },
-        { alt: 'Firma X5', cost: '29.750', time: '45s', damage: '0.5', age: '2.8', sig: 'Tam' }
+        { alt: 'Firma X3', cost: '31.000 TL', time: '42s', quality: '0.3', stock: 'Tam' },
+        { alt: 'Firma X1', cost: '28.500 TL', time: '48s', quality: '0.8', stock: 'Tam' },
+        { alt: 'Firma X5', cost: '29.750 TL', time: '45s', quality: '0.5', stock: 'Tam' }
       ],
       analysis: {
-        weights: 'CRITIC: Süre ve Hasar Oranı ana belirleyici.',
-        moora: '1. Firma X3 (En iyi oransal performans)',
-        insight: 'CODAS analizi Firma X4\'ün düşük performansını (outlier) kesin olarak saptadı.',
-        gain: '%15 teslimat süresi iyileşmesi, %28 müşteri memnuniyeti artışı.'
+        weights: 'CRITIC Ağırlıkları: Taşıma Süresi ve Hasar Oranı ana belirleyici.',
+        results: 'MOORA Sonucu: 1. Firma X3 (En iyi oransal performans)',
+        insight: 'CODAS analizi, Firma X4\'ün düşük performansını (outlier) kesin olarak saptayarak riski elimine etti.',
+        gain: '%15 teslimat süresi azalması, müşteri memnuniyetinde %28 artış.'
       }
     }
   ];
@@ -248,13 +250,13 @@ const Blueprint = ({ onBack }) => {
         <div className="container d-flex justify-content-between align-items-center" style={{ maxWidth: '1280px', margin: '0 auto', width: '100%', padding: '20px' }}>
           <div className="logo-container">
             <Zap size={24} color="#3b82f6" />
-            <span className="logo-accent" style={{ color: '#fff', fontSize: '1.2rem' }}>VESTRA</span>
+            <span className="logo-accent" style={{ color: '#fff', fontSize: '1.2rem', fontWeight: 900 }}>VESTRA</span>
           </div>
           <div style={{ textAlign: 'center' }}>
             <span style={{ fontSize: '0.8rem', fontWeight: 900, letterSpacing: '8px', color: '#fff', opacity: 0.8 }}>THE BLUEPRINT</span>
-            <p style={{ fontSize: '0.6rem', color: '#3b82f6', fontWeight: 800, marginTop: '4px', letterSpacing: '2px' }}>STRATEGIC DECISION ENGINE</p>
+            <p style={{ fontSize: '0.6rem', color: '#3b82f6', fontWeight: 800, marginTop: '4px', letterSpacing: '2px' }}>STRATEJİK KARAR ÇERÇEVESİ</p>
           </div>
-          <button onClick={() => window.location.reload()} className="btn-premium" style={{ background: '#3b82f6', color: '#fff', padding: '10px 20px', borderRadius: '8px', fontWeight: 800 }}>
+          <button onClick={onBack} className="btn-premium" style={{ background: 'transparent', border: '1px solid #3b82f6', color: '#3b82f6', padding: '10px 25px', borderRadius: '8px', fontWeight: 800, cursor: 'pointer' }}>
             Launch Analyst
           </button>
         </div>
@@ -270,11 +272,8 @@ const Blueprint = ({ onBack }) => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
               >
-                 <div style={{ display: 'inline-block', padding: '6px 15px', background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)', borderRadius: '100px', color: '#3b82f6', fontSize: '0.75rem', fontWeight: 900, marginBottom: '25px', letterSpacing: '1px' }}>
-                    OPERASYONEL MÜKEMMELLİK ALTYAPISI
-                 </div>
-                 <h1 style={{ fontSize: '3.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '30px', background: 'linear-gradient(to right, #fff, #94a3b8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                    STRATEJİK SEÇİM <br/> MİMARİSİ
+                 <h1 style={{ fontSize: '3.5rem', fontWeight: 800, lineHeight: 1.1, marginBottom: '30px', color: '#fff' }}>
+                    HER BÜYÜK KARAR <br/> BİR PLAN İLE BAŞLAR
                  </h1>
                  <p style={{ fontSize: '1.2rem', color: '#94a3b8', lineHeight: 1.6, marginBottom: '45px', maxWidth: '600px' }}>
                     Senaryonuza en uygun çok kriterli karar verme modelini belirleyin, analitik temellerinizi oluşturun ve sürdürülebilir operasyonel üstünlük elde edin.
@@ -295,11 +294,11 @@ const Blueprint = ({ onBack }) => {
                    animate={{ opacity: 1, scale: 1 }}
                    transition={{ duration: 1 }}
                    className="glass-panel" 
-                   style={{ padding: '30px', borderRadius: '40px', border: '1px solid rgba(59, 130, 246, 0.2)', background: 'rgba(30, 41, 59, 0.4)' }}
+                   style={{ padding: '40px', borderRadius: '40px', border: '1px solid rgba(59, 130, 246, 0.2)', background: 'rgba(30, 41, 59, 0.4)' }}
                  >
                     <svg width="300" height="260" viewBox="0 0 300 260" fill="none">
-                       {/* Abstract Decision Tree SVG */}
-                       <motion.path d="M150 40 L150 80" stroke="#3b82f6" strokeWidth="2" animate={{ strokeDashoffset: [100, 0] }} />
+                       {/* Animated Decision Architecture Diagram */}
+                       <motion.path d="M150 40 L150 80" stroke="#3b82f6" strokeWidth="2" />
                        <circle cx="150" cy="40" r="6" fill="#3b82f6" />
                        <path d="M150 80 L80 140" stroke="#1e293b" strokeWidth="2" />
                        <path d="M150 80 L220 140" stroke="#1e293b" strokeWidth="2" />
@@ -329,21 +328,21 @@ const Blueprint = ({ onBack }) => {
                   <div style={{ width: '48px', height: '48px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '25px' }}>
                      <Database size={24} color="#3b82f6" />
                   </div>
-                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '15px' }}>Adım 1: Veri Girişi</h4>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '15px' }}>Adım 1: Veri Girişi ve Parametreleştirme</h4>
                   <p style={{ fontSize: '0.9rem', color: '#94a3b8', lineHeight: 1.6 }}>Kullanıcılar karar matrislerini oluşturur. Alternatifler ve kriterler tanımlanır. Sistem, normalize edilmiş karar uzayını hazırlar.</p>
                </div>
                <div className="glass-panel p-8 rounded-3xl border border-white/5 bg-[#1e293b]/40">
                   <div style={{ width: '48px', height: '48px', background: 'rgba(6, 182, 212, 0.1)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '25px' }}>
                      <Network size={24} color="#06b6d4" />
                   </div>
-                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '15px' }}>Adım 2: Algoritmik Analiz</h4>
-                  <p style={{ fontSize: '0.9rem', color: '#94a3b8', lineHeight: 1.6 }}>Seçilen metodolojiye göre Entropy, CRITIC veya AHP ile ağırlıklandırma yapılır; TOPSIS, EDAS veya WASPAS ile alternatifler derecelendirilir.</p>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '15px' }}>Adım 2: Algoritmik Analiz ve Ağırlıklandırma</h4>
+                  <p style={{ fontSize: '0.9rem', color: '#94a3b8', lineHeight: 1.6 }}>Entropy, CRITIC veya AHP ile kriter önem düzeyleri belirlenir; TOPSIS, EDAS veya WASPAS ile alternatifler matematiksel olarak derecelendirilir.</p>
                </div>
                <div className="glass-panel p-8 rounded-3xl border border-white/5 bg-[#1e293b]/40">
                   <div style={{ width: '48px', height: '48px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '25px' }}>
                      <BarChart3 size={24} color="#10b981" />
                   </div>
-                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '15px' }}>Adım 3: Raporlama</h4>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '15px' }}>Adım 3: Çok Senaryolu Raporlama</h4>
                   <p style={{ fontSize: '0.9rem', color: '#94a3b8', lineHeight: 1.6 }}>Farklı algoritmaların sonuçları karşılaştırılır. Duyarlılık analizi ile ağırlık değişimlerinin etkisi simüle edilerek nihai karar dokümante edilir.</p>
                </div>
             </div>
@@ -353,60 +352,52 @@ const Blueprint = ({ onBack }) => {
       {/* METHODS CATALOG */}
       <section id="methods" className="py-20" style={{ background: 'rgba(255,255,255,0.01)' }}>
          <div className="container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
-            <div className="d-flex justify-content-between items-end mb-16">
-               <div>
-                  <h2 style={{ fontSize: '2.2rem', fontWeight: 800 }}>Karar Verme Metodolojileri</h2>
-                  <p style={{ color: '#94a3b8', marginTop: '10px' }}>Dünya standartlarında kullanılan 8 ana çok kriterli karar verme algoritması.</p>
-               </div>
-               <div className="d-flex gap-2">
-                  <button className={`btn-filter ${methodFilter === 'all' ? 'active' : ''}`} onClick={() => setMethodFilter('all')}>Tümü</button>
-                  <button className={`btn-filter ${methodFilter === 'weight' ? 'active' : ''}`} onClick={() => setMethodFilter('weight')}>Ağırlıklandırma</button>
-                  <button className={`btn-filter ${methodFilter === 'rank' ? 'active' : ''}`} onClick={() => setMethodFilter('rank')}>Sıralama</button>
-               </div>
-            </div>
+            <h2 className="mb-16" style={{ fontSize: '2.2rem', fontWeight: 800 }}>Karar Verme Metodolojileri</h2>
 
             <div className="grid grid-cols-12 gap-6">
                {methods.map((m, i) => (
                   <motion.div 
                     key={i} 
-                    className="col-span-12 lg:col-span-6 glass-panel p-8 rounded-3xl border border-white/5 bg-[#1e293b]/20"
+                    className="col-span-12 lg:col-span-6 glass-panel p-10 rounded-[32px] border border-white/5 bg-[#1e293b]/20"
                     whileHover={{ translateY: -4 }}
                   >
-                     <div className="d-flex justify-content-between mb-6">
-                        <div className="d-flex gap-4">
-                           <div style={{ color: '#3b82f6' }}>{React.cloneElement(m.icon, { size: 32 })}</div>
+                     <div className="d-flex justify-content-between mb-8">
+                        <div className="d-flex gap-5">
+                           <div style={{ color: '#3b82f6' }}>{React.cloneElement(m.icon, { size: 40 })}</div>
                            <div>
-                              <h3 style={{ fontSize: '1.4rem', fontWeight: 800 }}>{m.name}</h3>
-                              <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#3b82f6', letterSpacing: '1px' }}>{m.cat.toUpperCase()}</span>
+                              <h3 style={{ fontSize: '1.6rem', fontWeight: 800 }}>{m.name}</h3>
+                              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#3b82f6', letterSpacing: '1px' }}>{m.cat.toUpperCase()}</span>
                            </div>
                         </div>
-                        <div className="text-right">
-                           <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block' }}>HASSASİYET</span>
-                           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: m.accuracy === 'Maksimum' ? '#10b981' : '#fff' }}>{m.accuracy}</span>
-                        </div>
                      </div>
 
-                     <div style={{ marginBottom: '25px' }}>
-                        <p style={{ fontSize: '0.95rem', color: '#cbd5e1', lineHeight: 1.6 }}>{m.definition}</p>
+                     <div style={{ marginBottom: '30px' }}>
+                        <p style={{ fontSize: '1rem', color: '#cbd5e1', lineHeight: 1.6 }}>{m.definition}</p>
                      </div>
 
-                     <div className="grid grid-cols-2 gap-6 mb-8">
+                     <div className="space-y-6">
                         <div>
-                           <h5 style={{ fontSize: '0.7rem', color: '#3b82f6', fontWeight: 800, marginBottom: '10px' }}>MATEMATİKSEL MANTIK</h5>
-                           <ul style={{ fontSize: '0.85rem', color: '#94a3b8', paddingLeft: '15px' }}>
-                              {m.logic.map((l, li) => <li key={li} style={{ marginBottom: '5px' }}>{l}</li>)}
+                           <h5 style={{ fontSize: '0.75rem', color: '#3b82f6', fontWeight: 800, marginBottom: '15px', textTransform: 'uppercase' }}>Nasıl Çalışır?</h5>
+                           <ul style={{ fontSize: '0.9rem', color: '#94a3b8', paddingLeft: '15px', listStyleType: 'decimal' }}>
+                              {m.logic.map((l, li) => <li key={li} style={{ marginBottom: '8px' }}>{l}</li>)}
                            </ul>
                         </div>
                         <div>
-                           <h5 style={{ fontSize: '0.7rem', color: '#3b82f6', fontWeight: 800, marginBottom: '10px' }}>GÜÇLÜ YÖNLER</h5>
-                           <ul style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
-                              {m.strengths.map((s, si) => <li key={si} style={{ marginBottom: '5px', display: 'flex', gap: '5px' }}><CheckCircle2 size={12} color="#10b981" /> {s}</li>)}
+                           <h5 style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 800, marginBottom: '15px', textTransform: 'uppercase' }}>Güçlü Yönler</h5>
+                           <ul style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
+                              {m.strengths.map((s, si) => <li key={si} style={{ marginBottom: '8px', display: 'flex', gap: '8px' }}><CheckCircle2 size={14} color="#10b981" /> {s}</li>)}
                            </ul>
+                        </div>
+                        <div>
+                           <h5 style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 800, marginBottom: '15px', textTransform: 'uppercase' }}>Uygulama Alanları</h5>
+                           <div className="flex flex-wrap gap-2">
+                              {m.applications.map((a, ai) => <span key={ai} style={{ fontSize: '0.75rem', padding: '4px 12px', background: 'rgba(255,255,255,0.05)', borderRadius: '100px' }}>{a}</span>)}
+                           </div>
                         </div>
                      </div>
 
-                     <div style={{ padding: '15px 20px', background: 'rgba(255,255,255,0.03)', borderRadius: '15px', borderLeft: '3px solid #3b82f6' }}>
-                        <p style={{ fontSize: '0.85rem', color: '#f8fafc', fontWeight: 600 }}>Optimal Kullanım: <span style={{ fontWeight: 400, color: '#94a3b8' }}>{m.optimal}</span></p>
+                     <div style={{ marginTop: '40px', padding: '20px', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '20px', borderLeft: '4px solid #3b82f6' }}>
+                        <p style={{ fontSize: '0.85rem', color: '#fff', fontWeight: 600 }}>Optimal Kullanım Koşulları: <span style={{ fontWeight: 400, color: '#94a3b8' }}>{m.optimal}</span></p>
                      </div>
                   </motion.div>
                ))}
@@ -414,73 +405,38 @@ const Blueprint = ({ onBack }) => {
          </div>
       </section>
 
-      {/* COMPARISON TABLE */}
-      <section className="py-20">
-         <div className="container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
-            <h2 className="text-center mb-16" style={{ fontSize: '2.2rem', fontWeight: 800 }}>Model Karşılaştırma Matrisi</h2>
-            <div className="glass-panel overflow-hidden rounded-3xl border border-white/5">
-               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                  <thead>
-                     <tr style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
-                        <th style={{ padding: '25px', textAlign: 'left', fontSize: '0.8rem', color: '#3b82f6' }}>SENARYO TÜRÜ</th>
-                        <th style={{ padding: '25px', textAlign: 'left', fontSize: '0.8rem', color: '#3b82f6' }}>AĞIRLIKLANDIRMA</th>
-                        <th style={{ padding: '25px', textAlign: 'left', fontSize: '0.8rem', color: '#3b82f6' }}>SIRALAMA</th>
-                        <th style={{ padding: '25px', textAlign: 'left', fontSize: '0.8rem', color: '#3b82f6' }}>ZORLUK</th>
-                        <th style={{ padding: '25px', textAlign: 'left', fontSize: '0.8rem', color: '#3b82f6' }}>SÜRE</th>
-                        <th style={{ padding: '25px', textAlign: 'left', fontSize: '0.8rem', color: '#3b82f6' }}>DOĞRULUK</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {[
-                        { type: 'Objektif Veri Odaklı', w: 'Entropy', r: 'TOPSIS', d: 'Orta', t: '5-7\'', a: 'Yüksek' },
-                        { type: 'Kriter Çatışması Mevcut', w: 'CRITIC', w2: 'CODAS', d: 'Yüksek', t: '10-12\'', a: 'Çok Yüksek' },
-                        { type: 'Kurum Öncelikleri / Uzman', w: 'AHP', r: 'VIKOR', d: 'Yüksek', t: '15-20\'', a: 'Yüksek' },
-                        { type: 'Maksimum Bilimsel Hassasiyet', w: 'CRITIC', r: 'WASPAS', d: 'Çok Yüksek', t: '12-15\'', a: 'Maksimum' },
-                        { type: 'Hızlı Operasyonel Karar', w: 'CRITIC', r: 'MOORA', d: 'Düşük', t: '5-6\'', a: 'Orta-Yüksek' }
-                     ].map((row, ri) => (
-                        <tr key={ri} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                           <td style={{ padding: '20px 25px', fontSize: '0.9rem', fontWeight: 700 }}>{row.type}</td>
-                           <td style={{ padding: '20px 25px', fontSize: '0.9rem', color: '#94a3b8' }}>{row.w}</td>
-                           <td style={{ padding: '20px 25px', fontSize: '0.9rem', color: '#94a3b8' }}>{row.r || row.w2}</td>
-                           <td style={{ padding: '20px 25px', fontSize: '0.9rem', color: '#94a3b8' }}>{row.d}</td>
-                           <td style={{ padding: '20px 25px', fontSize: '0.9rem', color: '#94a3b8' }}>{row.t}</td>
-                           <td style={{ padding: '20px 25px', fontSize: '0.9rem', color: ri === 3 ? '#10b981' : '#fff', fontWeight: ri === 3 ? 900 : 400 }}>{row.a}</td>
-                        </tr>
-                     ))}
-                  </tbody>
-               </table>
-            </div>
-         </div>
-      </section>
-
       {/* CASE PROJECTS SECTION */}
       <section id="scenarios" className="py-20">
          <div className="container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
-            <h2 className="text-center mb-16" style={{ fontSize: '2.2rem', fontWeight: 800 }}>Uygulama Senaryoları ve Vaka Analizleri</h2>
+            <h2 className="text-center mb-16" style={{ fontSize: '2.2rem', fontWeight: 800 }}>Uygulama Senaryoları ve Gerçek Vaka Analizleri</h2>
             <div className="grid grid-cols-12 gap-8">
                {caseProjects.map((p, i) => (
-                  <div key={i} className="col-span-12 lg:col-span-4 glass-panel p-6 rounded-3xl border border-white/5 bg-[#1e293b]/20" style={{ cursor: 'pointer' }} onClick={() => setSelectedCase(p)}>
-                     <div className="d-flex justify-content-between align-items-center mb-6">
-                        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#3b82f6' }}>{p.id}</span>
-                        <div style={{ color: '#3b82f6' }}>{p.icon}</div>
+                  <div key={i} className="col-span-12 lg:col-span-4 glass-panel p-8 rounded-[40px] border border-white/5 bg-[#1e293b]/20" style={{ cursor: 'pointer' }} onClick={() => setSelectedCase(p)}>
+                     <div className="d-flex justify-content-between align-items-center mb-8">
+                        <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#3b82f6' }}>{p.id}</span>
+                        <div style={{ color: '#3b82f6' }}>{React.cloneElement(p.icon, { size: 32 })}</div>
                      </div>
-                     <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '10px' }}>{p.name}</h3>
-                     <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.5, marginBottom: '20px' }}>{p.description}</p>
+                     <h3 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '15px' }}>{p.name}</h3>
+                     <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '2px' }}>SEKTÖR: {p.sector}</span>
+                     <p style={{ fontSize: '0.95rem', color: '#94a3b8', lineHeight: 1.5, marginTop: '20px', marginBottom: '30px' }}>{p.description}</p>
                      
-                     <div style={{ marginBottom: '20px' }}>
-                        <table style={{ width: '100%', fontSize: '0.75rem', color: '#94a3b8' }}>
+                     <div style={{ marginBottom: '30px' }}>
+                        <table style={{ width: '100%', fontSize: '0.85rem', color: '#94a3b8' }}>
                            <thead>
-                              <tr><th style={{ textAlign: 'left' }}>Alternatif</th><th style={{ textAlign: 'right' }}>Maliyet</th></tr>
+                              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                 <th style={{ textAlign: 'left', padding: '10px 0' }}>Alternatif</th>
+                                 <th style={{ textAlign: 'right', padding: '10px 0' }}>Birim Veri</th>
+                              </tr>
                            </thead>
                            <tbody>
                               {p.matrix.slice(0, 3).map((r, ri) => (
-                                 <tr key={ri}><td style={{ padding: '4px 0' }}>{r.alt}</td><td style={{ textAlign: 'right' }}>{r.cost || r.return}</td></tr>
+                                 <tr key={ri}><td style={{ padding: '8px 0' }}>{r.alt}</td><td style={{ textAlign: 'right', fontWeight: 700, color: '#fff' }}>{r.cost || r.return}</td></tr>
                               ))}
                            </tbody>
                         </table>
                      </div>
-                     <button className="btn-v5 w-full" style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)', fontSize: '0.8rem' }}>
-                        Analiz Detaylarını Görüntüle
+                     <button className="btn-action w-full" style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.2)', fontSize: '0.9rem', justifyContent: 'center' }}>
+                        Detaylı Analizi Görüntüle <ExternalLink size={16} />
                      </button>
                   </div>
                ))}
@@ -496,58 +452,61 @@ const Blueprint = ({ onBack }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
+              style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.95)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}
               onClick={() => setSelectedCase(null)}
             >
                <motion.div 
                  className="glass-panel"
-                 initial={{ scale: 0.9, y: 20 }}
+                 initial={{ scale: 0.95, y: 20 }}
                  animate={{ scale: 1, y: 0 }}
-                 style={{ maxWidth: '900px', width: '100%', background: '#0a0e1a', border: '1px solid #1e293b', borderRadius: '32px', padding: '40px', position: 'relative', overflowY: 'auto', maxHeight: '90vh' }}
+                 style={{ maxWidth: '1000px', width: '100%', background: '#0a0e1a', border: '1px solid #1e293b', borderRadius: '48px', padding: '50px', position: 'relative', overflowY: 'auto', maxHeight: '90vh' }}
                  onClick={e => e.stopPropagation()}
                >
-                  <button style={{ position: 'absolute', top: '25px', right: '25px', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }} onClick={() => setSelectedCase(null)}>Kapat [Esc]</button>
+                  <button style={{ position: 'absolute', top: '30px', right: '30px', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', fontWeight: 800 }} onClick={() => setSelectedCase(null)}>Kapat [Esc]</button>
                   
-                  <div className="d-flex gap-4 align-items-center mb-8">
-                     <div style={{ color: '#3b82f6' }}>{React.cloneElement(selectedCase.icon, { size: 40 })}</div>
+                  <div className="d-flex gap-6 align-items-center mb-12">
+                     <div style={{ color: '#3b82f6' }}>{React.cloneElement(selectedCase.icon, { size: 56 })}</div>
                      <div>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>{selectedCase.name}</h2>
-                        <span style={{ color: '#3b82f6', fontWeight: 700 }}>SEKTÖR: {selectedCase.sector}</span>
-                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-10 mb-10">
-                     <div className="card-elite" style={{ padding: '25px', background: 'rgba(255,255,255,0.02)' }}>
-                        <h4 style={{ fontSize: '0.8rem', color: '#3b82f6', fontWeight: 800, marginBottom: '15px' }}>UYGULANAN ANALİZ MİMARİSİ</h4>
-                        <p style={{ fontSize: '1rem', color: '#fff', fontWeight: 600 }}>{selectedCase.analysis.weights}</p>
-                        <div style={{ marginTop: '20px', padding: '15px', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '10px' }}>
-                           <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>{selectedCase.analysis.insight}</p>
-                        </div>
-                     </div>
-                     <div className="card-elite" style={{ padding: '25px', background: 'rgba(16, 185, 129, 0.03)', border: '1px solid rgba(16, 185, 129, 0.1)' }}>
-                        <h4 style={{ fontSize: '0.8rem', color: '#10b981', fontWeight: 800, marginBottom: '15px' }}>STRATEJİK SONUÇ VE KAZANIM</h4>
-                        <p style={{ fontSize: '1.1rem', color: '#fff', fontWeight: 800 }}>{selectedCase.analysis.topsis || selectedCase.analysis.edas}</p>
-                        <div style={{ marginTop: '20px', display: 'flex', gap: '10px', alignItems: 'center', color: '#10b981' }}>
-                           <TrendingUp size={20} />
-                           <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>{selectedCase.analysis.gain}</span>
+                        <h2 style={{ fontSize: '2.5rem', fontWeight: 800 }}>{selectedCase.name}</h2>
+                        <div className="d-flex gap-4 mt-2">
+                           <span style={{ color: '#3b82f6', fontWeight: 800, fontSize: '0.8rem' }}>SEKTÖR: {selectedCase.sector}</span>
+                           <span style={{ color: '#94a3b8', fontWeight: 800, fontSize: '0.8rem' }}>SAHİBİ: {selectedCase.owner}</span>
                         </div>
                      </div>
                   </div>
 
-                  <div style={{ textAlign: 'center' }}>
-                     <button className="btn-action" style={{ background: '#3b82f6', color: '#fff', width: '100%' }}>Bu Senaryo Verisiyle Analizi Başlat</button>
+                  <div className="grid grid-cols-2 gap-10 mb-12">
+                     <div style={{ padding: '30px', background: 'rgba(255,255,255,0.02)', borderRadius: '32px', border: '1px solid #1e293b' }}>
+                        <h4 style={{ fontSize: '0.9rem', color: '#3b82f6', fontWeight: 800, marginBottom: '20px' }}>ANALİZ MİMARİSİ</h4>
+                        <p style={{ fontSize: '1.1rem', color: '#fff', fontWeight: 600, marginBottom: '20px' }}>{selectedCase.analysis.weights}</p>
+                        <div style={{ padding: '20px', background: 'rgba(59, 130, 246, 0.05)', borderRadius: '15px' }}>
+                           <p style={{ fontSize: '0.9rem', color: '#cbd5e1', lineHeight: 1.5 }}>{selectedCase.analysis.insight}</p>
+                        </div>
+                     </div>
+                     <div style={{ padding: '30px', background: 'rgba(16, 185, 129, 0.03)', borderRadius: '32px', border: '1px solid rgba(16, 185, 129, 0.1)' }}>
+                        <h4 style={{ fontSize: '0.9rem', color: '#10b981', fontWeight: 800, marginBottom: '20px' }}>STRATEJİK SONUÇ VE KAZANIM</h4>
+                        <p style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 800, marginBottom: '20px' }}>{selectedCase.analysis.results}</p>
+                        <div style={{ display: 'flex', gap: '15px', alignItems: 'center', color: '#10b981' }}>
+                           <TrendingUp size={28} />
+                           <span style={{ fontSize: '1rem', fontWeight: 800 }}>KAZANIM: {selectedCase.analysis.gain}</span>
+                        </div>
+                     </div>
                   </div>
+
+                  <button className="btn-action" style={{ background: '#3b82f6', color: '#fff', width: '100%', justifyContent: 'center', padding: '20px', borderRadius: '16px' }}>
+                     Bu Şablonu Kullanarak Analizi Başlat
+                  </button>
                </motion.div>
             </motion.div>
          )}
       </AnimatePresence>
 
       <footer className="py-20 border-t border-white/5 text-center">
-         <p style={{ color: '#475569', fontSize: '0.7rem', fontWeight: 800, letterSpacing: '10px', textTransform: 'uppercase' }}>
-            VESTRA ELITE PRO | STRATEGIC DECISION ARCHITECTURE © 2026
+         <p style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 900, letterSpacing: '12px', textTransform: 'uppercase' }}>
+            VESTRA INTELLIGENCE PRO © 2026
          </p>
-         <div style={{ marginTop: '20px', color: '#1e293b', fontSize: '0.6rem' }}>
-            Kurumsal Karar Destek Sistemleri - Operasyonel Verimlilik ve Bilimsel Analitik Çerçevesi
+         <div style={{ marginTop: '20px', color: '#1e293b', fontSize: '0.7rem', fontWeight: 800 }}>
+            PROFESYONEL ÇKKV KARAR REHBERİ - B2B KURUMSAL ÇERÇEVE
          </div>
       </footer>
 
@@ -556,28 +515,17 @@ const Blueprint = ({ onBack }) => {
           min-height: 100vh;
           position: relative;
           z-index: 1;
+          font-family: 'Inter', sans-serif;
         }
         .blueprint-hero-grid {
           position: fixed;
           top: 0; left: 0; width: 100%; height: 100%;
           background-image: 
-            linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
-          background-size: 60px 60px;
+            linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+          background-size: 80px 80px;
           z-index: -1;
         }
-        .btn-filter {
-           padding: 8px 16px;
-           background: transparent;
-           border: 1px solid #1e293b;
-           color: #94a3b8;
-           border-radius: 8px;
-           font-size: 0.75rem;
-           font-weight: 700;
-           cursor: pointer;
-           transition: 0.3s;
-        }
-        .btn-filter.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
         .btn-action {
            padding: 15px 30px;
            border-radius: 12px;
@@ -590,9 +538,8 @@ const Blueprint = ({ onBack }) => {
            gap: 10px;
            border: none;
         }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2); }
         .glass-panel { transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-panel:hover { border-color: rgba(59, 130, 246, 0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .grid-cols-12 { display: grid; grid-template-columns: repeat(12, 1fr); }
         .col-span-7 { grid-column: span 7; }
         .col-span-5 { grid-column: span 5; }
@@ -601,8 +548,6 @@ const Blueprint = ({ onBack }) => {
            .lg\\:col-span-6 { grid-column: span 6; }
            .lg\\:col-span-4 { grid-column: span 4; }
         }
-        .items-center { align-items: center; }
-        .items-end { align-items: flex-end; }
       `}</style>
     </div>
   );
