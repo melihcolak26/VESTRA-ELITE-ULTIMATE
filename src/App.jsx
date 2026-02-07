@@ -32,9 +32,9 @@ function App() {
               <div className="icon-glow-sm"><Zap size={22} fill="#10b981" color="#10b981" /></div>
               <span className="logo-accent">VESTRA INTELLIGENCE PRO</span>
             </div>
-            <div className="d-flex align-items-center gap-5">
+            <div className="d-flex align-items-center gap-6">
               <button 
-                style={{ background: 'none', border: 'none', color: '#94A3B8', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: '2px' }} 
+                style={{ background: 'none', border: 'none', color: '#10b981', fontWeight: 900, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: '2px', textShadow: '0 0 10px rgba(16, 185, 129, 0.3)' }} 
                 onClick={() => setView('blueprint')}
               >
                 THE BLUEPRINT
@@ -60,7 +60,13 @@ function App() {
                 <button className="btn-premium-lg" onClick={() => setView('analyst')}>
                    Sistemi Başlat <Play size={18} fill="currentColor" />
                 </button>
-                <button className="btn-glass-lg" onClick={() => setView('blueprint')}>
+                <button className="btn-glass-lg" onClick={() => setView('analyst')}>
+                  Profesyonel Panel
+                </button>
+                <button 
+                  style={{ background: 'transparent', color: '#10b981', border: '1px solid #10b981', padding: '1.2rem 2.5rem', borderRadius: '12px', fontWeight: 900, cursor: 'pointer' }}
+                  onClick={() => setView('blueprint')}
+                >
                   THE BLUEPRINT
                 </button>
               </div>
