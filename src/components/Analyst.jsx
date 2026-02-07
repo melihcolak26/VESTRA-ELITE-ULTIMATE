@@ -19,16 +19,14 @@ import {
   ChevronLeft, 
   Plus, 
   Zap, 
+  FileText, 
   TrendingUp,
-  AlertCircle,
-  FileText,
-  Trash2,
+  Settings,
   Share2,
-  Wand2,
-  Globe,
-  Loader2
+  Trash2,
+  AlertCircle
 } from 'lucide-react';
-import { topsis, edas, codas, moora, vikor, waspas, calculateEntropyWeights, calculateCriticWeights, calculateAhpWeights } from '../engine/mcdm';
+import { topsis, edas, codas, calculateEntropyWeights, calculateCriticWeights } from '../engine/mcdm';
 
 ChartJS.register(
   CategoryScale,
@@ -43,33 +41,20 @@ ChartJS.register(
 );
 
 const Analyst = ({ onBack }) => {
-  const [magicLink, setMagicLink] = useState('');
-  const [isMagicLoading, setIsMagicLoading] = useState(false);
   const [data, setData] = useState(() => {
     const saved = localStorage.getItem('vestra_analyst_data');
     return saved ? JSON.parse(saved) : {
-      alternatives: ['Tesla Model S', 'BMW i7', 'Lucid Air'],
+      alternatives: ['Alternatif A', 'Alternatif B', 'Alternatif C'],
       criteria: [
-        { name: 'Menzil (km)', beneficial: true },
-        { name: 'Fiyat ($)', beneficial: false },
-        { name: 'Otonom Güç', beneficial: true }
+        { name: 'Kriter 1', beneficial: true },
+        { name: 'Kriter 2', beneficial: false }
       ],
-      matrix: [[650, 95000, 9], [600, 120000, 8], [830, 87000, 7]]
+      matrix: [[10, 20], [15, 10], [12, 15]]
     };
   });
 
   const [activeWeight, setActiveWeight] = useState('entropy');
   const [activeRank, setActiveRank] = useState('topsis');
-
-  const handleMagicLink = async () => {
-    if (!magicLink) return;
-    setIsMagicLoading(true);
-    setTimeout(() => {
-      setIsMagicLoading(false);
-      setMagicLink('');
-      alert("Magic Link feature is initializing! Data extraction protocols active.");
-    }, 2000);
-  };
 
   const weights = useMemo(() => {
     if (activeWeight === 'entropy') return calculateEntropyWeights(data.matrix);
@@ -81,11 +66,7 @@ const Analyst = ({ onBack }) => {
     const beneficial = data.criteria.map(c => c.beneficial);
     if (activeRank === 'topsis') return topsis(data.matrix, weights, beneficial);
     if (activeRank === 'edas') return edas(data.matrix, weights, beneficial);
-    if (activeRank === 'codas') return codas(data.matrix, weights, beneficial);
-    if (activeRank === 'moora') return moora(data.matrix, weights, beneficial);
-    if (activeRank === 'vikor') return vikor(data.matrix, weights, beneficial);
-    if (activeRank === 'waspas') return waspas(data.matrix, weights, beneficial);
-    return topsis(data.matrix, weights, beneficial);
+    return codas(data.matrix, weights, beneficial);
   }, [data.matrix, weights, data.criteria, activeRank]);
 
   const updateMatrix = (i, j, val) => {
@@ -101,8 +82,8 @@ const Analyst = ({ onBack }) => {
       label: alt,
       data: data.matrix[i].map((v, j) => {
         const col = data.matrix.map(r => r[j]);
-        const max = Math.max(...col) || 1;
-        return v / max;
+        const max = Math.max(...col);
+        return max ? v / max : 0;
       }),
       backgroundColor: `rgba(${30 + i * 60}, ${185 - i * 40}, ${255 - i * 20}, 0.2)`,
       borderColor: `rgb(${30 + i * 60}, ${185 - i * 40}, ${255 - i * 20})`,
@@ -111,95 +92,103 @@ const Analyst = ({ onBack }) => {
   };
 
   return (
-    <div className="hub-layout fade-in" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', height: '100vh' }}>
-      <aside className="sidebar-hub" style={{ padding: '30px', background: 'rgba(2, 6, 23, 0.95)', borderRight: '1px solid rgba(255,255,255,0.05)' }}>
-        <div className="brand-v6 mb-8">
-          <Zap size={28} fill="#10b981" color="#10b981" />
-          <div className="flex flex-col">
-            <span className="font-black text-xl tracking-tighter">VESTRA <span className="text-emerald">ELITE</span></span>
-          </div>
+    <div className="dashboard-layout fade-in">
+      <aside className="sidebar-premium">
+        <div className="logo-box d-flex align-items-center gap-3">
+          <div className="icon-glow"><Zap size={24} fill="#10b981" color="#10b981" /></div>
+          <span className="font-black text-xl tracking-tighter">VESTRA <span className="text-secondary">PRO</span></span>
         </div>
 
-        <nav className="flex flex-col gap-4">
-          <button className="btn-elite btn-elite-secondary" style={{ padding: '12px' }} onClick={() => {}}>Dashboard</button>
-          <div className="card-elite" style={{ padding: '15px' }}>
-            <label className="text-xs font-bold text-secondary mb-2 block">AĞIRLIK MOTORU</label>
-            <select className="input-elite" style={{ width: '100%' }} value={activeWeight} onChange={e => setActiveWeight(e.target.value)}>
-              <option value="entropy">Shannon Entropy</option>
-              <option value="critic">CRITIC Method</option>
-            </select>
-          </div>
-          <div className="card-elite" style={{ padding: '15px' }}>
-            <label className="text-xs font-bold text-secondary mb-2 block">SIRALAMA MODELİ</label>
-            <select className="input-elite" style={{ width: '100%' }} value={activeRank} onChange={e => setActiveRank(e.target.value)}>
-              <option value="topsis">TOPSIS (Expert)</option>
-              <option value="edas">EDAS (Dynamic)</option>
-              <option value="codas">CODAS (Hybrid)</option>
-              <option value="moora">MOORA (Ratio)</option>
-              <option value="vikor">VIKOR (Compromise)</option>
-              <option value="waspas">WASPAS (Aggregated)</option>
-            </select>
+        <nav className="d-flex flex-column gap-2">
+          <p className="text-xs font-bold text-secondary uppercase tracking-widest px-2">Main</p>
+          <button className="nav-item active"><LayoutDashboard size={18} /> Analytics</button>
+          <button className="nav-item"><Database size={18} /> Matrix</button>
+          <button className="nav-item"><FileText size={18} /> Reports</button>
+          
+          <div className="mt-5 d-flex flex-column gap-4">
+             <div className="config-card-premium p-4 rounded-2xl border border-white/5 bg-white/5">
+                <label className="text-[10px] font-black uppercase text-secondary mb-2 d-block">Weighting</label>
+                <select className="w-full bg-transparent font-bold text-sm outline-none" value={activeWeight} onChange={e => setActiveWeight(e.target.value)}>
+                   <option value="entropy">Shannon Entropy</option>
+                   <option value="critic">CRITIC Algorithm</option>
+                </select>
+             </div>
+             <div className="config-card-premium p-4 rounded-2xl border border-white/5 bg-white/5">
+                <label className="text-[10px] font-black uppercase text-secondary mb-2 d-block">Ranking</label>
+                <select className="w-full bg-transparent font-bold text-sm outline-none" value={activeRank} onChange={e => setActiveRank(e.target.value)}>
+                   <option value="topsis">TOPSIS Expert</option>
+                   <option value="edas">EDAS Dynamic</option>
+                </select>
+             </div>
           </div>
         </nav>
 
-        <button className="btn-elite btn-elite-secondary mt-auto" onClick={onBack}>
-          <ChevronLeft size={18} /> Ana Menü
-        </button>
+        <div className="mt-auto">
+          <button className="btn-back w-full d-flex align-items-center gap-3" onClick={onBack}>
+            <ChevronLeft size={18} /> Exit Workspace
+          </button>
+        </div>
       </aside>
 
-      <main className="content-hub" style={{ padding: '40px', overflowY: 'auto' }}>
-        <header className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-6">
-             <button 
-                className="p-3 bg-white/5 hover:bg-white/10 rounded-2xl border border-white/5 transition-all text-secondary hover:text-white"
-                onClick={onBack}
-                title="Geri Dön"
-             >
-                <ChevronLeft size={24} />
-             </button>
-             <div>
-                <h2 className="font-black text-3xl">Karar Çalışma Alanı</h2>
-                <p className="text-secondary text-xs font-bold uppercase tracking-widest mt-1">Vestra Elite Command Center</p>
-             </div>
+      <main className="content-premium">
+        <div className="glow-top-right"></div>
+        
+        <header className="d-flex justify-content-between align-items-center mb-10">
+          <div>
+            <h1 className="heading-premium">Advanced Decision Analysis</h1>
+            <p className="text-secondary font-medium">Empowering decision-making through hybrid scientific models.</p>
           </div>
-          <div className="flex gap-4">
-             <div className="flex items-center gap-2 bg-white/5 p-2 px-4 rounded-2xl border border-white/10">
-                <Globe size={16} />
-                <input 
-                  className="bg-transparent border-none text-xs text-white outline-none w-48" 
-                  placeholder="Link yapıştır (Amazon/Tesla)..." 
-                  value={magicLink}
-                  onChange={(e) => setMagicLink(e.target.value)}
-                />
-                <button onClick={handleMagicLink} disabled={isMagicLoading}>
-                  {isMagicLoading ? <Loader2 size={16} className="animate-spin" /> : <Wand2 size={16} />}
-                </button>
-             </div>
+          <div className="d-flex gap-3">
+            <button className="btn-v5 glass"><Share2 size={18} /> Share</button>
+            <button className="btn-action"><Plus size={18} /> New Scenario</button>
           </div>
         </header>
 
-        <div className="dash-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '20px' }}>
-          <div className="col-span-8 card-elite">
-             <h3 className="mb-4">Karar Matrisi</h3>
-             <div style={{ overflowX: 'auto' }}>
-                <table className="elite-table">
+        <div className="grid grid-cols-12 gap-6">
+          <div className="col-span-12 lg:col-span-8 glass-panel p-6 rounded-3xl">
+             <div className="d-flex justify-content-between align-items-center mb-6">
+                <h3 className="font-bold text-lg d-flex align-items-center gap-2"><Database size={20} className="text-emerald-500" /> Matrix Configuration</h3>
+                <div className="d-flex gap-2">
+                   <button className="btn-sm-glass" onClick={() => setData({...data, alternatives: [...data.alternatives, `Alt ${data.alternatives.length + 1}`], matrix: [...data.matrix, new Array(data.criteria.length).fill(0)]})}>+ Add Alternative</button>
+                   <button className="btn-sm-glass" onClick={() => setData({...data, criteria: [...data.criteria, {name: `Crit ${data.criteria.length + 1}`, beneficial: true}], matrix: data.matrix.map(r => [...r, 0])})}>+ Add Criterion</button>
+                </div>
+             </div>
+             <div className="table-responsive">
+                <table className="table-v6">
                    <thead>
                       <tr>
-                         <th style={{ textAlign: 'left' }}>Alternatif</th>
+                         <th>Scenario</th>
                          {data.criteria.map((c, i) => (
-                            <th key={i}>{c.name}</th>
+                            <th key={i}>
+                               <div className="d-flex flex-column">
+                                  <input className="table-header-input" value={c.name} onChange={e => {
+                                     const n = [...data.criteria]; n[i].name = e.target.value; setData({...data, criteria: n});
+                                  }} />
+                                  <span className={`badge-type ${c.beneficial ? 'text-emerald-400' : 'text-rose-400'}`} onClick={() => {
+                                     const n = [...data.criteria]; n[i].beneficial = !n[i].beneficial; setData({...data, criteria: n});
+                                  }}>
+                                     {c.beneficial ? 'Benefit' : 'Cost'}
+                                  </span>
+                               </div>
+                            </th>
                          ))}
+                         <th width="40"></th>
                       </tr>
                    </thead>
                    <tbody>
                       {data.alternatives.map((alt, i) => (
                          <tr key={i}>
-                            <td style={{ textAlign: 'left' }}>{alt}</td>
+                            <td>
+                               <input className="table-row-input" value={alt} onChange={e => {
+                                  const n = [...data.alternatives]; n[i] = e.target.value; setData({...data, alternatives: n});
+                               }} />
+                            </td>
                             {data.criteria.map((_, j) => (
                                <td key={j}>
-                                  <input type="number" className="input-elite" style={{ width: '80px' }} value={data.matrix[i][j]} onChange={e => updateMatrix(i, j, e.target.value)} />
+                                  <input type="number" className="input-glass" value={data.matrix[i][j]} onChange={e => updateMatrix(i, j, e.target.value)} />
                                </td>
                             ))}
+                            <td><Trash2 size={14} className="text-white/20 hover:text-rose-500 cursor-pointer" /></td>
                          </tr>
                       ))}
                    </tbody>
@@ -207,27 +196,122 @@ const Analyst = ({ onBack }) => {
              </div>
           </div>
 
-          <div className="col-span-4 card-elite">
-             <h3>Performans</h3>
-             <div className="flex flex-col gap-4 mt-4">
-                {results.ranking.map((res, i) => (
-                   <div key={i} className="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                      <span className="font-bold">{data.alternatives[res.index]}</span>
-                      <span className="text-emerald font-black">{res.score.toFixed(3)}</span>
-                   </div>
-                ))}
+          <div className="col-span-12 lg:col-span-4 d-flex flex-column gap-6">
+             <div className="glass-panel p-6 rounded-3xl h-full">
+                <h3 className="font-bold text-lg mb-6 d-flex align-items-center gap-2"><TrendingUp size={20} className="text-indigo-400" /> Leaderboard</h3>
+                <div className="d-flex flex-column gap-3">
+                   {results.ranking.map((res, i) => (
+                      <div key={i} className={`p-4 rounded-2xl d-flex align-items-center gap-4 transition-all ${i === 0 ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-white/5 border border-white/5'}`}>
+                         <span className={`w-8 h-8 rounded-full d-flex align-items-center justify-content-center font-black ${i === 0 ? 'bg-emerald-500 text-black' : 'bg-white/10 text-white/40'}`}>{i + 1}</span>
+                         <div className="flex-1">
+                            <p className="font-bold text-sm">{data.alternatives[res.index]}</p>
+                            <div className="w-full h-1 bg-white/5 rounded-full mt-2 overflow-hidden">
+                               <div className="h-full bg-emerald-500" style={{ width: `${(res.score / results.ranking[0].score) * 100}%` }}></div>
+                            </div>
+                         </div>
+                         <span className="font-mono text-xs font-bold">{res.score.toFixed(4)}</span>
+                      </div>
+                   ))}
+                </div>
              </div>
           </div>
 
-          <div className="col-span-12 card-elite">
-             <h3>Orti'nin Hibrit Analizi</h3>
-             <p className="mt-4 text-lg">
-                Kanki, <strong>{activeWeight.toUpperCase()}-{activeRank.toUpperCase()}</strong> hibrit modellemesine göre en mantıklı yol <span className="text-emerald font-black">{data.alternatives[results.ranking[0].index]}</span> gibi duruyor. 
-                Bu model, {activeWeight === 'entropy' ? ' Shannon Entropy' : ' CRITIC'} ile objektif ağırlıklandırılıp <strong>{activeRank.toUpperCase()}</strong> ile bilimsel olarak sıralandı.
-             </p>
+          <div className="col-span-12 lg:col-span-6 glass-panel p-6 rounded-3xl">
+             <h3 className="font-bold mb-6">Scenario Consistency (Radar)</h3>
+             <div className="h-[300px]">
+                <Radar data={radarData} options={{ maintainAspectRatio: false, scales: { r: { ticks: { display: false }, grid: { color: 'rgba(255,255,255,0.05)' }, angleLines: { color: 'rgba(255,255,255,0.05)' } } } }} />
+             </div>
+          </div>
+
+          <div className="col-span-12 lg:col-span-6 glass-panel p-6 rounded-3xl bg-gradient-to-br from-emerald-500/5 to-transparent">
+             <h3 className="font-bold mb-6 d-flex align-items-center gap-2"><Cpu size={20} className="text-emerald-500" /> Scientific Insight</h3>
+             <div className="d-flex flex-column gap-4">
+                <div className="p-5 rounded-2xl bg-black/40 border border-emerald-500/20">
+                   <p className="text-lg leading-relaxed">
+                      Model analizi sonucunda <span className="text-emerald-400 font-black">{data.alternatives[results.ranking[0].index]}</span> seçeneği, 
+                      yüksek verimlilik puanı (<span className="text-emerald-400">{results.ranking[0].score.toFixed(4)}</span>) ile dominant karakter göstermektedir.
+                   </p>
+                </div>
+                <div className="d-flex gap-3 align-items-center text-sm text-secondary p-3 bg-white/5 rounded-xl">
+                   <AlertCircle size={16} />
+                   <span>{data.criteria[weights.indexOf(Math.max(...weights))].name} kriteri karar sürecinde %{(Math.max(...weights)*100).toFixed(1)} etki ile en kritik rolü oynamıştır.</span>
+                </div>
+             </div>
           </div>
         </div>
       </main>
+
+      <style jsx>{`
+        .icon-glow {
+          padding: 8px;
+          background: rgba(16, 185, 129, 0.1);
+          border-radius: 12px;
+          box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+        .nav-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 16px;
+          border-radius: 14px;
+          background: transparent;
+          border: none;
+          color: var(--text-secondary);
+          font-weight: 600;
+          cursor: pointer;
+          transition: 0.3s;
+          text-align: left;
+        }
+        .nav-item:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .nav-item.active { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .glow-top-right {
+          position: absolute;
+          top: -20%;
+          right: -10%;
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+          z-index: -1;
+        }
+        .badge-type {
+          font-size: 9px;
+          font-weight: 900;
+          text-transform: uppercase;
+          cursor: pointer;
+          margin-top: 4px;
+        }
+        .btn-sm-glass {
+          padding: 8px 16px;
+          background: rgba(255,255,255,0.03);
+          border: 1px solid var(--glass-border);
+          color: #fff;
+          border-radius: 10px;
+          font-size: 11px;
+          font-weight: 800;
+          cursor: pointer;
+          transition: 0.2s;
+        }
+        .btn-sm-glass:hover { background: rgba(255,255,255,0.08); }
+        .btn-v5 {
+           padding: 0.8rem 1.2rem;
+           border-radius: 14px;
+           background: transparent;
+           border: 1px solid var(--glass-border);
+           color: #fff;
+           font-weight: 700;
+           display: flex;
+           align-items: center;
+           gap: 8px;
+           cursor: pointer;
+        }
+        .flex-1 { flex: 1; }
+        .col-span-12 { grid-column: span 12 / span 12; }
+        @media (min-width: 1024px) {
+           .lg\\:col-span-8 { grid-column: span 8 / span 8; }
+           .lg\\:col-span-4 { grid-column: span 4 / span 4; }
+           .lg\\:col-span-6 { grid-column: span 6 / span 6; }
+        }
+      `}</style>
     </div>
   );
 };
