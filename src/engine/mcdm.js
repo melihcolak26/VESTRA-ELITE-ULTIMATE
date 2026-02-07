@@ -196,6 +196,56 @@ export const codas = (matrix, weights, beneficial) => {
   return { scores: h, ranking: getRanking(h) };
 };
 
+export const moora = (matrix, weights, beneficial) => {
+  const norm = normalizeVector(matrix);
+  const scores = norm.map(row => {
+    let s = 0;
+    row.forEach((v, j) => {
+      if (beneficial[j]) s += v * weights[j];
+      else s -= v * weights[j];
+    });
+    return s;
+  });
+  return { scores, ranking: getRanking(scores) };
+};
+
+export const vikor = (matrix, weights, beneficial) => {
+  const cols = matrix[0].length;
+  const fPlus = [], fMinus = [];
+  for (let j = 0; j < cols; j++) {
+    const col = matrix.map(r => r[j]);
+    fPlus[j] = beneficial[j] ? Math.max(...col) : Math.min(...col);
+    fMinus[j] = beneficial[j] ? Math.min(...col) : Math.max(...col);
+  }
+  const s = matrix.map(row => sum(row.map((v, j) => weights[j] * (fPlus[j] - v) / (fPlus[j] - fMinus[j] || 1))));
+  const r = matrix.map(row => Math.max(...row.map((v, j) => weights[j] * (fPlus[j] - v) / (fPlus[j] - fMinus[j] || 1))));
+  const sStar = Math.min(...s), sMinus = Math.max(...s);
+  const rStar = Math.min(...r), rMinus = Math.max(...r);
+  const v = 0.5;
+  const q = s.map((si, i) => v * (si - sStar) / (sMinus - sStar || 1) + (1 - v) * (r[i] - rStar) / (rMinus - rStar || 1));
+  // In VIKOR lower Q is better, but getRanking sorts descending. We use 1-q for ranking.
+  const scores = q.map(val => 1 - val);
+  return { scores, ranking: getRanking(scores) };
+};
+
+export const waspas = (matrix, weights, beneficial) => {
+  const rows = matrix.length;
+  const cols = matrix[0].length;
+  const norm = matrix.map(row => row.map((v, j) => {
+    const col = matrix.map(r => r[j]);
+    const max = Math.max(...col);
+    const min = Math.min(...col);
+    return beneficial[j] ? v / (max || 1) : min / (v || 1);
+  }));
+  const wsm = norm.map(row => sum(row.map((v, j) => v * weights[j])));
+  const wpm = norm.map(row => row.reduce((prod, v, j) => prod * Math.pow(v || 0.0001, weights[j]), 1));
+  const lambda = 0.5;
+  const scores = wsm.map((v, i) => lambda * v + (1 - lambda) * wpm[i]);
+  return { scores, ranking: getRanking(scores) };
+};
+
+const sum = (arr) => arr.reduce((a, b) => a + b, 0);
+
 const getRanking = (scores) => {
   return scores
     .map((score, index) => ({ index, score }))
