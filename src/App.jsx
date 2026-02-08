@@ -8,8 +8,9 @@ import {
   Zap, Shield, Cpu, BarChart3, ChevronRight, Play, Globe, Lock, 
   ArrowUpRight, Activity, LayoutDashboard, BookOpen, Layers, 
   Settings as SettingsIcon, Newspaper, FolderKanban, CheckCircle2,
-  TrendingUp, ExternalLink, Database, Info
+  TrendingUp, ExternalLink, Database, Info, Clock, AlertTriangle
 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 function App() {
   const [view, setView] = useState(() => localStorage.getItem('vestra_view') || 'landing')
@@ -26,73 +27,55 @@ function App() {
 
   const caseProjects = [
     { 
-      id: 'PROJE #01', 
-      name: 'Endüstriyel Hammadde Tedarik Seçimi', 
-      sector: 'İmalat / Otomotiv', 
-      description: '6 farklı çelik tedarikçisinin maliyet, kalite ve lojistik performansına göre optimizasyonu.',
+      id: 'CASE-ALPHA', 
+      name: 'Otonom Gemi Filosu Genişletme', 
+      sector: 'Denizcilik / Otonom', 
+      description: 'HMM için 10 yeni otonom konteyner gemisinin teknik ve maliyet odaklı seçimi.',
       matrix: [
-        { alt: 'Tedarikçi A', cost: '45.50', time: '3', quality: '95', stock: '10k' },
-        { alt: 'Tedarikçi C', cost: '48.75', time: '2', quality: '98', stock: '8k' }
+        { alt: 'Hyundai Gen-3', cost: '$85M', safety: '98%', efficiency: '94%' },
+        { alt: 'Samsung NeoV', cost: '$78M', safety: '95%', efficiency: '91%' },
+        { alt: 'Daewoo EcoS', cost: '$82M', safety: '96%', efficiency: '96%' }
       ],
       analysis: {
-        weights: 'Entropy: Maliyet (0.35), Süre (0.28)',
-        results: '1. Türkiye C (0.78), 2. Tedarikçi A (0.72)',
-        gain: '%12 maliyet tasarrufu.'
+        method: 'AHP + TOPSIS',
+        insight: 'Yakıt verimliliği kriteri kararda %42 ağırlığa sahiptir.',
+        result: 'Hyundai Gen-3 (Puan: 0.892)',
+        gain: 'Yıllık $4.2M operasyonel tasarruf.'
       }
     },
     { 
-      id: 'PROJE #02', 
-      name: 'Yönetici Pozisyonu Değerlendirme', 
-      sector: 'İK / Kurumsal', 
-      description: 'Yetkinlik bazlı 6 yönetici adayının hiyerarşik analizi ve tutarlılık kontrolü.',
+      id: 'CASE-BETA', 
+      name: 'Lojistik HUB Lokasyon Analizi', 
+      sector: 'Lojistik / Strateji', 
+      description: 'Avrupa dağıtım ağı için Rotterdam, Hamburg ve Antwerp limanlarının karşılaştırması.',
       matrix: [
-        { alt: 'Aday 4', cost: '10 Yıl', time: '82', quality: '95', stock: '85' },
-        { alt: 'Aday 1', cost: '8 Yıl', time: '85', quality: '92', stock: '88' }
+        { alt: 'Rotterdam', cost: 'High', infra: '10/10', port_cap: 'Max' },
+        { alt: 'Antwerp', cost: 'Mid', infra: '9/10', port_cap: 'Mid+' }
       ],
       analysis: {
-        weights: 'AHP: Mülakat (0.30), Teknik (0.25)',
-        results: 'Aday 4 (0.81) - Dengeli Profil',
-        gain: 'Ekip verimliliğinde %22 artış.'
-      }
-    },
-    { 
-      id: 'PROJE #03', 
-      name: 'Kara Taşımacılığı Partner Seçimi', 
-      sector: 'Lojistik / SCM', 
-      description: 'Güzergah maliyeti ve hasar oranlarına göre 9 nakliye firmasının karşılaştırılması.',
-      matrix: [
-        { alt: 'Firma X3', cost: '31k TL', time: '42s', quality: '0.3', stock: 'Tam' },
-        { alt: 'Firma X1', cost: '28k TL', time: '48s', quality: '0.8', stock: 'Tam' }
-      ],
-      analysis: {
-        weights: 'CRITIC: Hasar Oranı ana belirleyici.',
-        results: '1. Firma X3 (En iyi oran)',
-        gain: '%15 teslimat süresi iyileşmesi.'
-      }
-    },
-    { 
-      id: 'PROJE #04', 
-      name: 'Üretim Tesisi Lokasyon Seçimi', 
-      sector: 'Strateji / Operasyon', 
-      description: '7 şehir adayının altyapı, teşvik ve işgücü maliyetlerine göre 10 yıllık analizi.',
-      matrix: [
-        { alt: 'Şehir Y', cost: '12k TL', time: 'A+', quality: '90', stock: 'Yüksek' }
-      ],
-      analysis: {
-        weights: 'Entropy: Teşvik ve Altyapı.',
-        results: '1. Marmara Bölgesi Y Şehri',
-        gain: 'Optimal maliyet-fayda dengesi.'
+        method: 'Entropy + EDAS',
+        insight: 'Altyapı kalitesi, maliyet avantajının önüne geçmektedir.',
+        result: 'Rotterdam (Puan: 0.845)',
+        gain: 'Teslimat sürelerinde %18 kısalma.'
       }
     }
   ];
 
-  // Modern Platform Shell with Tabs
+  const intelFeed = [
+    { title: 'HMM & HD Hyundai İşbirliği', body: '40 gemilik otonom navigasyon projesi kapsamında ilk 5 geminin kurulumu tamamlandı.', time: '2 saat önce', cat: 'TEKNİK' },
+    { title: 'Kızıldeniz Rota Optimizasyonu', body: 'AI tabanlı rota analitiği sayesinde gemiler %12 yakıt tasarrufu ile güvenli limanlara ulaşıyor.', time: '5 saat önce', cat: 'OPERASYON' },
+    { title: 'Yeni Nesil ISR Uyduları', body: 'BlackSky, denizcilik gözetimi için Gen-3 uydularını devreye aldı. Vestra veri akışı güncellendi.', time: '1 gün önce', cat: 'İSTİHBARAT' }
+  ];
+
+  // Modern Platform Shell with Sidebar and Tabs
   const renderPlatform = () => {
     return (
       <div className="platform-shell fade-in">
         <aside className="platform-sidebar">
           <div className="sidebar-brand">
-             <Zap size={22} fill="#10b981" color="#10b981" />
+             <div className="icon-glow-sm" style={{ padding: '6px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '8px' }}>
+                <Zap size={20} fill="#10b981" color="#10b981" />
+             </div>
              <span className="logo-text">VESTRA PRO</span>
           </div>
           
@@ -104,96 +87,167 @@ function App() {
                 <BookOpen size={18} /> <span>Metodoloji</span>
              </button>
              <button className={`nav-tab ${activeTab === 'projects' ? 'active' : ''}`} onClick={() => setActiveTab('projects')}>
-                <FolderKanban size={18} /> <span>Vaka Analizleri</span>
+                <FolderKanban size={18} /> <span>Vaka Kütüphanesi</span>
              </button>
              <button className={`nav-tab ${activeTab === 'intel' ? 'active' : ''}`} onClick={() => setActiveTab('intel')}>
-                <Newspaper size={18} /> <span>Sektörel Zekâ</span>
+                <Activity size={18} /> <span>Sektörel Zekâ</span>
              </button>
           </nav>
 
           <div className="sidebar-footer">
-             <button className="nav-tab" onClick={() => setView('landing')}>
+             <div className="status-indicator">
+                <div className="pulse-dot"></div>
+                <span>Sistem Aktif (v5.Master)</span>
+             </div>
+             <button className="nav-tab mt-4" style={{ color: '#ef4444' }} onClick={() => setView('landing')}>
                 <ChevronRight size={18} style={{ transform: 'rotate(180deg)' }} /> <span>Çıkış Yap</span>
              </button>
           </div>
         </aside>
 
         <main className="platform-content">
-          {activeTab === 'analyst' && <Analyst onBack={() => setView('landing')} setView={setView} />}
-          
-          {activeTab === 'blueprint' && (
-            <div className="fade-in">
-              <Blueprint onBack={() => setActiveTab('analyst')} />
-            </div>
-          )}
+          <AnimatePresence mode="wait">
+             {activeTab === 'analyst' && (
+                <motion.div key="analyst" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                   <Analyst onBack={() => setView('landing')} setView={setView} />
+                </motion.div>
+             )}
+             
+             {activeTab === 'blueprint' && (
+                <motion.div key="blueprint" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                   <Blueprint onBack={() => setActiveTab('analyst')} />
+                </motion.div>
+             )}
 
-          {activeTab === 'projects' && (
-            <div className="p-12 fade-in">
-               <div className="mb-12">
-                  <h2 className="text-4xl font-black mb-4">Kurumsal Vaka Kütüphanesi</h2>
-                  <p className="text-secondary text-lg">Gerçek verilerle yapılandırılmış stratejik senaryoları inceleyin.</p>
-               </div>
+             {activeTab === 'projects' && (
+                <motion.div key="projects" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="p-12">
+                   <div className="mb-12 d-flex justify-content-between align-items-end">
+                      <div>
+                         <h2 className="text-4xl font-black mb-4">Kurumsal Vaka Kütüphanesi</h2>
+                         <p className="text-secondary text-lg">MCDM modelleriyle çözümlenmiş stratejik senaryo örnekleri.</p>
+                      </div>
+                      <div className="badge-master">6 AKTİF SENARYO</div>
+                   </div>
 
-               <div className="grid grid-cols-2 gap-8">
-                  {caseProjects.map((p, i) => (
-                    <div key={i} className="glass-panel p-8 rounded-[32px] border border-white/5 bg-white/2 hover:border-emerald-500/30 transition-all">
-                       <div className="flex justify-between mb-6">
-                          <span className="text-xs font-black text-emerald-500 tracking-widest">{p.id}</span>
-                          <span className="text-xs font-bold text-secondary uppercase">{p.sector}</span>
-                       </div>
-                       <h3 className="text-xl font-bold mb-4">{p.name}</h3>
-                       <p className="text-secondary text-sm mb-6 leading-relaxed">{p.description}</p>
-                       
-                       <div className="space-y-4 mb-8">
-                          <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
-                             <div className="flex items-center gap-2 text-xs font-bold"><Database size={14} /> ANALİZ</div>
-                             <span className="text-xs">{p.analysis.results}</span>
-                          </div>
-                          <div className="flex justify-between items-center p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/10">
-                             <div className="flex items-center gap-2 text-xs font-bold text-emerald-500"><TrendingUp size={14} /> KAZANIM</div>
-                             <span className="text-xs font-bold text-emerald-500">{p.analysis.gain}</span>
-                          </div>
-                       </div>
+                   <div className="grid grid-cols-2 gap-8">
+                      {caseProjects.map((p, i) => (
+                        <div key={i} className="glass-panel p-8 rounded-[40px] border border-white/5 bg-white/2 hover:border-emerald-500/30 transition-all group" style={{ cursor: 'pointer' }} onClick={() => setSelectedCase(p)}>
+                           <div className="flex justify-between mb-6">
+                              <div style={{ color: '#10b981' }} className="p-3 bg-emerald-500/10 rounded-2xl"><Layers size={24} /></div>
+                              <span className="text-[10px] font-black text-secondary tracking-widest uppercase">{p.sector}</span>
+                           </div>
+                           <h3 className="text-2xl font-bold mb-4">{p.name}</h3>
+                           <p className="text-secondary text-sm mb-8 leading-relaxed">{p.description}</p>
+                           
+                           <div className="space-y-4">
+                              <div className="flex justify-between items-center p-4 bg-white/5 rounded-2xl border border-white/5">
+                                 <div className="flex items-center gap-3 text-xs font-bold text-secondary"><Cpu size={14} /> MODEL</div>
+                                 <span className="text-xs font-black text-white">{p.analysis.method}</span>
+                              </div>
+                              <div className="flex justify-between items-center p-4 bg-emerald-500/5 rounded-2xl border border-emerald-500/10">
+                                 <div className="flex items-center gap-3 text-xs font-bold text-emerald-500"><TrendingUp size={14} /> KAZANIM</div>
+                                 <span className="text-xs font-black text-emerald-500">{p.analysis.gain}</span>
+                              </div>
+                           </div>
 
-                       <button className="btn-v5 w-full justify-center bg-white/5 hover:bg-white/10" onClick={() => setActiveTab('analyst')}>
-                          Bu Veriyi Karar Paneline Aktar
-                       </button>
-                    </div>
-                  ))}
-               </div>
-            </div>
-          )}
+                           <div className="mt-8 flex items-center gap-2 text-emerald-500 font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                              DETAYLI ANALİZİ GÖRÜNTÜLE <ArrowUpRight size={14} />
+                           </div>
+                        </div>
+                      ))}
+                   </div>
+                </motion.div>
+             )}
 
-          {activeTab === 'intel' && (
-            <div className="p-12 fade-in">
-               <div className="mb-12">
-                  <h2 className="text-4xl font-black mb-4">Intelligence Dashboard</h2>
-                  <p className="text-secondary text-lg">Denizcilik ve AI dünyasından anlık stratejik veri akışı.</p>
-               </div>
+             {activeTab === 'intel' && (
+                <motion.div key="intel" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="p-12">
+                   <div className="mb-12">
+                      <h2 className="text-4xl font-black mb-4">Sektörel Zekâ Dashboard</h2>
+                      <p className="text-secondary text-lg">Denizcilik, Lojistik ve AI dünyasından stratejik veri akışı.</p>
+                   </div>
 
-               <div className="space-y-6">
-                  {[
-                    { title: 'HMM & HD Hyundai Otonom Operasyonu', body: '40 gemilik filo AI navigasyon sistemlerine (HiNAS) geçiş yapıyor. Operasyonel maliyetlerde %15 düşüş öngörülüyor.', tag: 'DENİZCİLİK', color: '#10b981' },
-                    { title: 'Super Bowl LX: ai.com Otonom Ajan Lansmanı', body: 'Bugün duyurulan yeni nesil ajan mimarisi, kurumsal karar süreçlerini saniyelere indirecek bir hıza sahip.', tag: 'TEKNOLOJİ', color: '#6366f1' },
-                    { title: 'Rotterdam Limanı: Güvenlik Analitiği', body: 'Stolt Tankers, AI navigasyon denemeleriyle congested sularda kaza riskini %30 azalttığını raporladı.', tag: 'LOJİSTİK', color: '#3b82f6' },
-                    { title: 'Shadow Fleet & Dark Data Krizi', body: '3.000 geminin AIS manipülasyonu yaptığı saptandı. Vestra gibi şeffaf analitik motorlarına talep artıyor.', tag: 'GÜVENLİK', color: '#f59e0b' }
-                  ].map((news, idx) => (
-                    <div key={idx} className="glass-panel p-8 rounded-[32px] border border-white/5 bg-white/2 relative overflow-hidden group">
-                       <div className="flex justify-between items-center mb-4">
-                          <span style={{ color: news.color }} className="text-xs font-black tracking-widest">{news.tag}</span>
-                          <span className="text-[10px] text-secondary font-bold">CANLI | 08 ŞUBAT 2026</span>
-                       </div>
-                       <h4 className="text-xl font-bold mb-3">{news.title}</h4>
-                       <p className="text-secondary leading-relaxed">{news.body}</p>
-                       <div className="absolute right-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <ArrowUpRight size={20} className="text-secondary" />
-                       </div>
-                    </div>
-                  ))}
-               </div>
-            </div>
-          )}
+                   <div className="grid grid-cols-12 gap-8">
+                      <div className="col-span-12 lg:col-span-8 space-y-6">
+                         {intelFeed.map((news, idx) => (
+                           <div key={idx} className="glass-panel p-8 rounded-[32px] border border-white/5 bg-white/2 relative overflow-hidden group">
+                              <div className="flex justify-between items-center mb-4">
+                                 <div className="flex items-center gap-2">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                    <span className="text-[10px] font-black text-emerald-500 tracking-widest">{news.cat}</span>
+                                 </div>
+                                 <div className="flex items-center gap-2 text-secondary">
+                                    <Clock size={12} />
+                                    <span className="text-[10px] font-bold">{news.time}</span>
+                                 </div>
+                              </div>
+                              <h4 className="text-xl font-bold mb-3">{news.title}</h4>
+                              <p className="text-secondary leading-relaxed text-sm">{news.body}</p>
+                           </div>
+                         ))}
+                      </div>
+                      <div className="col-span-12 lg:col-span-4 space-y-6">
+                         <div className="glass-panel p-8 rounded-[32px] border border-white/5 bg-blue-500/5">
+                            <h5 className="font-bold mb-4 flex items-center gap-2"><AlertTriangle size={16} className="text-blue-400" /> KRİTİK UYARI</h5>
+                            <p className="text-xs text-secondary leading-relaxed">Shadow Fleet operasyonları nedeniyle Süveyş Kanalı geçiş verilerinde %8 anomali saptandı. MCDM modellerinde 'Risk' kriteri ağırlığı artırılmalıdır.</p>
+                         </div>
+                         <div className="glass-panel p-8 rounded-[32px] border border-white/5 bg-white/2">
+                            <h5 className="font-bold mb-4 text-xs tracking-widest text-secondary">GLOBAL AI ENDEKSİ</h5>
+                            <div className="h-40 flex items-end gap-2">
+                               {[40, 60, 45, 90, 70, 85].map((h, i) => (
+                                 <div key={i} className="flex-1 bg-blue-500/20 rounded-t-lg transition-all hover:bg-blue-500" style={{ height: `${h}%` }}></div>
+                               ))}
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </motion.div>
+             )}
+          </AnimatePresence>
         </main>
+
+        {/* Case Detail Modal */}
+        <AnimatePresence>
+          {selectedCase && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[1000] flex items-center justify-center p-10 bg-black/90 backdrop-blur-sm" onClick={() => setSelectedCase(null)}>
+               <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} className="glass-panel p-12 rounded-[50px] max-w-4xl w-full bg-[#0a0e1a] border border-white/10" onClick={e => e.stopPropagation()}>
+                  <div className="flex justify-between items-start mb-10">
+                     <div>
+                        <span className="text-xs font-black text-emerald-500 tracking-[5px] mb-4 d-block uppercase">{selectedCase.id}</span>
+                        <h2 className="text-4xl font-black">{selectedCase.name}</h2>
+                     </div>
+                     <button className="p-3 bg-white/5 rounded-full hover:bg-white/10" onClick={() => setSelectedCase(null)}><ChevronRight style={{ transform: 'rotate(90deg)' }} /></button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-12 mb-12">
+                     <div className="space-y-6">
+                        <h4 className="text-xs font-black text-secondary tracking-widest border-b border-white/5 pb-2 uppercase">Karar Matrisi Özeti</h4>
+                        <table className="w-full text-sm text-secondary">
+                           <tbody>
+                              {selectedCase.matrix.map((row, i) => (
+                                <tr key={i} className="border-b border-white/5"><td className="py-3 font-bold text-white">{row.alt}</td><td className="py-3 text-right">{row.cost || row.efficiency}</td></tr>
+                              ))}
+                           </tbody>
+                        </table>
+                     </div>
+                     <div className="space-y-8">
+                        <div className="p-6 bg-emerald-500/5 rounded-3xl border border-emerald-500/10">
+                           <h5 className="text-xs font-black text-emerald-500 mb-2 uppercase">Analitik Sonuç</h5>
+                           <p className="text-lg font-bold">{selectedCase.analysis.result}</p>
+                        </div>
+                        <div className="p-6 bg-blue-500/5 rounded-3xl border border-blue-500/10">
+                           <h5 className="text-xs font-black text-blue-500 mb-2 uppercase">Stratejik Öngörü</h5>
+                           <p className="text-sm text-secondary leading-relaxed">{selectedCase.analysis.insight}</p>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <button className="btn-premium w-full py-5 rounded-2xl text-lg" onClick={() => {setSelectedCase(null); setActiveTab('analyst');}}>
+                     BU SENARYOYU ANALİZ PANELİNE AKTAR
+                  </button>
+               </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     );
   };
@@ -270,6 +324,8 @@ function App() {
       )}
 
       {view === 'platform' && renderPlatform()}
+      
+      {view === 'blueprint' && <Blueprint onBack={() => setView('landing')} />}
       
       {view === 'wizard' && selectedTemplate && (
         <div className="container py-5">
