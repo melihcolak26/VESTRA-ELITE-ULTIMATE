@@ -9,11 +9,12 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Blueprint = ({ onBack }) => {
-  const [selectedCase, setSelectedCase] = useState(null);
+  const [methodFilter, setMethodFilter] = useState('all');
 
   const methods = [
     { 
       id: 'entropy',
+      type: 'weight',
       name: 'SHANNON ENTROPY', 
       cat: 'Ağırlıklandırma / Objektif Varyans Analizi', 
       complexity: 'Orta', 
@@ -21,20 +22,22 @@ const Blueprint = ({ onBack }) => {
       accuracy: 'Yüksek',
       icon: <Database />,
       definition: 'Kriterlerin bilgi içeriğini istatistiksel olarak ölçer. Yüksek varyans gösteren kriterlere (karar vermede ayırt edici olan) daha yüksek ağırlık atanır. Veriye dayalı, uzman müdahalesi gerektirmez.',
+      formula: 'ej = -k Σ pij ln(pij)',
       logic: [
         'Karar matrisinin normalize edilmesi (probabilistic dönüşüm)',
-        'Her kriter için entropi değeri hesaplama: ej = -k Σ pij ln(pij)',
+        'Her kriter için entropi değeri hesaplama',
         'Çeşitlilik katsayısı: dj = 1 - ej',
-        'Normalize ağırlık: wj = d_j / Σ d_j'
+        'Normalize ağırlık: wj = dj / Σ dj'
       ],
-      applications: ['Finansal Portföy Optimizasyonu', 'Tedarikçi Performans Değerlendirmesi', 'Kalite Kontrol Parametreleri'],
-      strengths: ['Tamamen objektif, insan önyargısı yok', 'Hızlı hesaplama', 'Çok sayıda alternatif ve kriter için uygun'],
+      applications: ['Finansal portföy optimizasyonu', 'Tedarikçi performans değerlendirmesi', 'Kalite kontrol parametreleri'],
+      strengths: ['Tamamen objektif, insan önyargısı yok', 'Hızlı hesaplama', 'Çok sayıda alternatif için uygun'],
       limitations: ['Stratejik önemi göz ardı edebilir', 'Veri kalitesine bağımlı'],
-      optimal: 'Objektif karar gerektiğinde, veri setinde anlamlı varyasyon olduğunda ve stratejik önceliklerin net olmadığı durumlarda tercih edilir.',
+      optimal: 'Objektif karar gerektiğinde ve stratejik önceliklerin net olmadığı durumlarda tercih edilir.',
       combinations: 'TOPSIS, EDAS, MOORA'
     },
     { 
       id: 'critic',
+      type: 'weight',
       name: 'CRITIC', 
       cat: 'Ağırlıklandırma / Korelasyon-Duyarlı Analiz', 
       complexity: 'Yüksek', 
@@ -42,140 +45,153 @@ const Blueprint = ({ onBack }) => {
       accuracy: 'Çok Yüksek',
       icon: <Activity />,
       definition: 'Kriterler arasındaki korelasyonu (bilgi tekrarını) cezalandırır. Birbirine bağımlı kriterlerin ağırlığını düşürerek, bağımsız ve bilgi taşıyan kriterleri öne çıkarır.',
+      formula: 'Cj = σj Σ (1 - rjk)',
       logic: [
         'Standardizasyon ve standart sapma hesabı',
         'Korelasyon matrisi oluşturma (Pearson katsayısı)',
-        'Çatışma bilgisi: Cj = σj Σ (1 - rjk)',
-        'Ağırlıklandırma: wj = C_j / Σ C_j'
+        'Çatışma bilgisi hesaplama',
+        'Ağırlıklandırma: wj = Cj / Σ Cj'
       ],
-      applications: ['Ar-Ge Projelerinde Kriter Karmaşasını Önleme', 'İnsan Kaynakları Yetkinlik Değerlendirmesi', 'Çok Parametreli Mühendislik Tasarımları'],
-      strengths: ['Kriterler arası çatışmayı tespit eder', 'Dengeli ağırlıklar sağlar'],
+      applications: ['Ar-Ge projelerinde kriter karmaşasını önleme', 'İnsan kaynakları yetkinlik değerlendirmesi', 'Çok parametreli mühendislik tasarımları'],
+      strengths: ['Kriterler arası çatışmayı tespit eder', 'Daha dengeli ağırlıklar verir'],
       limitations: ['Hesaplama yükü fazladır', 'Veri setinin yapısına hassastır'],
-      optimal: 'Kriterlerin birbiriyle çeliştiği ve korelasyonun yüksek olduğu karmaşık problemlerde kullanılır.',
+      optimal: 'Kriterlerin birbiriyle yüksek korelasyon gösterdiği durumlarda rasyonel denge kurar.',
       combinations: 'CODAS, WASPAS, MOORA'
     },
     { 
       id: 'ahp',
+      type: 'weight',
       name: 'AHP Protocol', 
       cat: 'Ağırlıklandırma / Hiyerarşik Karşılaştırma', 
       complexity: 'Yüksek', 
       time: '15-20 Dakika', 
       accuracy: 'Yüksek',
       icon: <Layers />,
-      definition: 'Niteliksel uzman değerlerini niceliksel ağırlıklara dönüştürür. İkili karşılaştırma matrisleri ve tutarlılık analizi (Consistency Ratio < 0.10) ile güvenilir önceliklendirme sağlar.',
+      definition: 'Niteliksel uzman değerlerini niceliksel ağırlıklara dönüştürür. İkili karşılaştırma matrisleri ve tutarlılık analizi ile güvenilir önceliklendirme sağlar.',
+      formula: 'CR = CI / RI',
       logic: [
         'Saaty ölçeği (1-9) ile ikili karşılaştırma matrisi oluşturma',
         'Özvektör hesaplama (Eigenvector) ile yerel öncelikler',
-        'Tutarlılık oranı (CR) kontrolü: CR = CI/RI',
+        'Tutarlılık oranı (CR) kontrolü',
         'Global ağırlıkların hesaplanması'
       ],
-      applications: ['Stratejik Planlama', 'Lokasyon Seçimi', 'Kamu Politikaları', 'Yatırım Kararları'],
+      applications: ['Stratejik planlama', 'Lokasyon seçimi', 'Kamu politikaları', 'Yatırım kararları'],
       strengths: ['Kurum önceliklerini yansıtır', 'Nitel kriterleri sayısallaştırır'],
-      limitations: ['Öznel yargı içerir', 'Tutarlılık yakalamak zaman alıcıdır'],
-      optimal: 'Uzman tecrübesinin ve kurum vizyonunun sayısal veriden daha öncelikli olduğu durumlarda kullanılır.',
+      limitations: ['Öznel yargı içerir', 'Büyük kriter setlerinde tutarlılık zordur'],
+      optimal: 'Uzman görüşünün ve stratejik vizyonun kritik olduğu yapısal kararlarda kullanılır.',
       combinations: 'VIKOR, TOPSIS, MOORA'
     },
     { 
       id: 'topsis',
-      name: 'TOPSIS', 
+      type: 'rank',
+      name: 'TOPSIS Elite', 
       cat: 'Sıralama / İdeal Uzaklık Metodu', 
       complexity: 'Orta', 
       time: '5-7 Dakika', 
       accuracy: 'Yüksek',
       icon: <Target />,
       definition: 'Pozitif-ideal (en iyi) ve negatif-ideal (en kötü) çözümlere olan Euclidean mesafelerini hesaplar. En iyiye en yakın ve en kötüye en uzak alternatifi belirler.',
+      formula: 'Ci = Di- / (Di+ + Di-)',
       logic: [
         'Vektör normalizasyonu ve ağırlıklandırma',
         'İdeal (A+) ve anti-ideal (A-) çözümlerin belirlenmesi',
-        'Uzaklık hesabı: Di+ = √Σ (vij - vj+)²',
-        'Bağıl yakınlık: Ci = Di- / (Di+ + Di-)'
+        'Euclidean mesafe hesabı',
+        'Bağıl yakınlık katsayısı ile sıralama'
       ],
-      applications: ['Ekipman Seçimi', 'Yazılım Karşılaştırmaları', 'Bina/lokasyon tercihleri'],
-      strengths: ['En yaygın kullanılan yöntem', 'Anlaşılır sonuçlar', 'Dengeli yaklaşım'],
+      applications: ['Ekipman seçimi', 'Yazılım karşılaştırmaları', 'Bina/lokasyon tercihleri'],
+      strengths: ['En yaygın kullanılan metot', 'Anlaşılır sonuçlar', 'Dengeli yaklaşım'],
       limitations: ['Kriterler arası korelasyonu yok sayar'],
-      optimal: 'Dengeli, standart ve kabul görmüş bir sıralama gerektiğinde ilk tercihtir.',
+      optimal: 'Dengeli ve standart bir sıralama algoritması arandığında en güvenilir seçenektir.',
       combinations: 'Entropy, CRITIC, AHP'
     },
     { 
       id: 'edas',
-      name: 'EDAS', 
+      type: 'rank',
+      name: 'EDAS Method', 
       cat: 'Sıralama / Ortalama Sapma Analizi', 
       complexity: 'Orta', 
       time: '8-10 Dakika', 
       accuracy: 'Yüksek',
       icon: <Scale />,
       definition: 'İdeal çözüm yerine ortalama çözüme olan uzaklığı temel alır. Uç değerlere (outlier) karşı daha robust (dayanıklı) sonuçlar üretir.',
+      formula: 'PDA = max(0, (AV - x)/AV)',
       logic: [
         'Ortalama çözüm (AV) hesabı her kriter için',
         'Pozitif (PDA) ve Negatif (NDA) uzaklık hesabı',
         'Ağırlıklandırılmış toplam skorlar',
         'Normalizasyon ve değerlendirme skoru (AS)'
       ],
-      applications: ['Riskli Yatırım Kararları', 'Volatil Veri Setleri', 'Finansal Belirsizlik'],
-      strengths: ['Outlier değerlere karşı dirençli', 'Stabil sonuçlar'],
-      limitations: ['Ortalama değerin anlamsız olduğu küçük setlerde zayıftır'],
+      applications: ['Riskli yatırım kararları', 'Volatil veri setleri', 'Finansal belirsizlik'],
+      strengths: ['Outlier\'lara karşı dirençli', 'Stabil sonuçlar'],
+      limitations: ['Ortalama değerin saptığı küçük örneklemlerde yanılabilir'],
       optimal: 'Veri setinde anomali veya aşırı uç değerler (aykırı veriler) olduğunda tercih edilir.',
       combinations: 'Entropy, CRITIC'
     },
     { 
       id: 'codas',
-      name: 'CODAS', 
+      type: 'rank',
+      name: 'CODAS Matrix', 
       cat: 'Sıralama / Hibrit Mesafe Analizi', 
       complexity: 'Yüksek', 
       time: '10-12 Dakika', 
       accuracy: 'Çok Yüksek',
       icon: <Boxes />,
       definition: 'Euclidean ve Taxicab mesafelerini kombine ederek sıralama yapar. Özellikle seçenekler birbirine çok yakınsa, hassas farkları ortaya çıkarır.',
+      formula: 'h_ik = (E_i - E_k) + ψ(E_i - E_k) * (T_i - T_k)',
       logic: [
         'Negatif ideal çözüme olan uzaklıkların belirlenmesi',
         'Öklid ve Taksi mesafelerinin hesaplanması',
         'Eşik değer üzerinden karşılaştırma matrisi',
         'Net değerlendirme skoru'
       ],
-      applications: ['Kritik Altyapı Projeleri', 'Hassas Mühendislik Kararları', 'Yatırım Kararları'],
-      strengths: ['İki farklı mesafe metriki kullanımı', 'Çok yüksek ayırt edicilik'],
-      limitations: ['Eşik değer seçimine duyarlıdır'],
-      optimal: 'Alternatiflerin performans değerlerinin birbirine çok yakın olduğu hassas durumlarda kullanılır.',
+      applications: ['Kritik altyapı projeleri', 'Hassas mühendislik kararları', 'Yüksek riskli yatırımlar'],
+      strengths: ['İki farklı mesafe metriki kullanımı', 'En güvenilir sonuçları verir'],
+      limitations: ['Hesaplama yoğunluğu fazladır'],
+      optimal: 'Alternatiflerin performans değerlerinin birbirine çok yakın olduğu hassas mühendislik kararlarında kullanılır.',
       combinations: 'CRITIC'
     },
     { 
       id: 'moora',
-      name: 'MOORA', 
+      type: 'rank',
+      name: 'MOORA-Ratio', 
       cat: 'Sıralama / Oransal Optimizasyon', 
       complexity: 'Düşük', 
       time: '5-6 Dakika', 
       accuracy: 'Orta-Yüksek',
       icon: <Binary />,
       definition: 'Fayda kriterlerinin toplamını, maliyet kriterlerinin toplamına böler. Hesaplama karmaşıklığı düşük, yüksek performanslı hızlı sonuç üretir.',
+      formula: 'Yi = Σ (Fayda) / Σ (Maliyet)',
       logic: [
         'Normalize matris üzerinden fayda ve maliyet ayrımı',
-        'Yi = Σ (Fayda) / Σ (Maliyet) hesabı',
-        'Orana göre sıralama'
+        'Oransal hesaplama',
+        'Sıralama belirleme'
       ],
-      applications: ['Lojistik Operasyonlar', 'Hızlı Tedarikçi Değerlendirme', 'Operasyonel Verimlilik'],
-      strengths: ['Basit, hızlı ve etkili', 'Endüstri standardı performans'],
-      limitations: ['Karmaşık hiyerarşileri modelleyemez'],
+      applications: ['Lojistik operasyonlar', 'Hızlı tedarikçi değerlendirme', 'Operasyonel verimlilik analizi'],
+      strengths: ['Basit, hızlı ve etkili', 'Endüstri standardı (özellikle SCM)'],
+      limitations: ['Hiyerarşik yapıları desteklemez'],
       optimal: 'Hızın doğruluktan daha önemli olduğu acil operasyonel kararlarda idealdir.',
       combinations: 'CRITIC, AHP'
     },
     { 
       id: 'waspas',
-      name: 'WASPAS', 
+      type: 'rank',
+      name: 'WASPAS Matrix', 
       cat: 'Sıralama / Hibrit Hassasiyet Modeli', 
       complexity: 'Çok Yüksek', 
       time: '12-15 Dakika', 
       accuracy: 'Maksimum',
       icon: <Workflow />,
       definition: 'Toplamsal (WSM) ve çarpımsal (WPM) modellerin birleşimidir. İki yaklaşımın avantajlarını kapsar, yüksek doğruluklu akademik sonuçlar sunar.',
+      formula: 'Qi = λ Σ wj xij + (1-λ) Π xij^wj',
       logic: [
-        'WSM skoru hesabı',
-        'WPM skoru hesabı',
-        'Birleşik skor: λ · WSM + (1-λ) · WPM (λ=0.5)'
+        'WSM ve WPM skorlarının ayrı hesaplanması',
+        'Birleşik skor: λ katsayısı ile agregasyon',
+        'Hassasiyet doğrulaması'
       ],
-      applications: ['Akademik Araştırmalar', 'Yüksek Hassasiyetli Mühendislik', 'Bilimsel Karar Destek'],
-      strengths: ['En yüksek doğruluk oranı', 'Hata payını minimize eder'],
-      limitations: ['Matematiksel yoğunluk'],
-      optimal: 'Hata payının kabul edilemez olduğu stratejik yatırım veya teknik tasarım kararlarında kullanılır.',
+      applications: ['Akademik araştırmalar', 'Yüksek hassasiyetli mühendislik seçimleri', 'Bilimsel karar destek sistemleri'],
+      strengths: ['En yüksek doğruluk oranı', 'Tutarlı sonuçlar'],
+      limitations: ['Matematiksel olarak en yoğun modeldir'],
+      optimal: 'Hata payının sıfıra yakın olması gereken stratejik yatırım veya teknik tasarım kararlarında kullanılır.',
       combinations: 'CRITIC'
     }
   ];
@@ -188,6 +204,8 @@ const Blueprint = ({ onBack }) => {
     { type: 'Hızlı Operasyonel Karar', w: 'CRITIC', r: 'MOORA', d: 'Düşük', t: '5-6\'', a: 'Orta-Yüksek' },
     { type: 'Yüksek Belirsizlik', w: 'Entropy', r: 'EDAS', d: 'Orta', t: '8-10\'', a: 'Yüksek' }
   ];
+
+  const filteredMethods = methods.filter(m => methodFilter === 'all' || m.type === methodFilter);
 
   return (
     <div className="blueprint-paper-v8 fade-in" style={{ background: '#0a0e1a', color: '#f8fafc', paddingBottom: '100px' }}>
@@ -245,21 +263,21 @@ const Blueprint = ({ onBack }) => {
                   <div style={{ width: '56px', height: '56px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '30px' }}>
                      <Database size={28} color="#3b82f6" />
                   </div>
-                  <h4 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '20px' }}>Adım 1: Veri Girişi</h4>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '20px' }}>Adım 1: Veri Girişi</h4>
                   <p style={{ fontSize: '1rem', color: '#94a3b8', lineHeight: 1.6 }}>Kullanıcılar karar matrislerini oluşturur. Alternatifler ve kriterler tanımlanır. Sistem, normalize edilmiş karar uzayını hazırlar.</p>
                </div>
                <div className="glass-panel p-10 rounded-3xl border border-white/5 bg-[#1e293b]/40">
                   <div style={{ width: '56px', height: '56px', background: 'rgba(6, 182, 212, 0.1)', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '30px' }}>
                      <Network size={28} color="#06b6d4" />
                   </div>
-                  <h4 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '20px' }}>Adım 2: Algoritmik Analiz</h4>
-                  <p style={{ fontSize: '1rem', color: '#94a3b8', lineHeight: 1.6 }}>Entropy, CRITIC veya AHP ile ağırlıklandırma yapılır; TOPSIS, EDAS veya WASPAS ile alternatifler matematiksel olarak derecelendirilir.</p>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '20px' }}>Adım 2: Algoritmik Analiz</h4>
+                  <p style={{ fontSize: '1rem', color: '#94a3b8', lineHeight: 1.6 }}>Entropy, CRITIC veya AHP ile kriter önem düzeyleri belirlenir; TOPSIS, EDAS veya WASPAS ile alternatifler derecelendirilir.</p>
                </div>
                <div className="glass-panel p-10 rounded-3xl border border-white/5 bg-[#1e293b]/40">
                   <div style={{ width: '56px', height: '56px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '30px' }}>
                      <BarChart3 size={28} color="#10b981" />
                   </div>
-                  <h4 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '20px' }}>Adım 3: Raporlama</h4>
+                  <h4 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '20px' }}>Adım 3: Raporlama</h4>
                   <p style={{ fontSize: '1rem', color: '#94a3b8', lineHeight: 1.6 }}>Farklı algoritmaların sonuçları karşılaştırılır. Duyarlılık analizi ile ağırlık değişimlerinin etkisi simüle edilerek nihai karar dokümante edilir.</p>
                </div>
             </div>
@@ -267,14 +285,28 @@ const Blueprint = ({ onBack }) => {
 
         {/* METHODS CATALOG */}
         <section id="methods" className="py-20">
-            <h2 className="mb-16" style={{ fontSize: '2.5rem', fontWeight: 800 }}>Karar Verme Metodolojileri</h2>
+            <div className="d-flex justify-content-between align-items-end mb-16">
+               <div>
+                  <h2 style={{ fontSize: '2.5rem', fontWeight: 800 }}>Karar Verme Metodolojileri</h2>
+                  <p style={{ color: '#94a3b8', marginTop: '10px' }}>Teknik yeterliliği yüksek, endüstri standardı 8 ana algoritma.</p>
+               </div>
+               <div className="d-flex gap-2">
+                  <button className={`btn-filter ${methodFilter === 'all' ? 'active' : ''}`} onClick={() => setMethodFilter('all')}>Tümü</button>
+                  <button className={`btn-filter ${methodFilter === 'weight' ? 'active' : ''}`} onClick={() => setMethodFilter('weight')}>Ağırlıklandırma</button>
+                  <button className={`btn-filter ${methodFilter === 'rank' ? 'active' : ''}`} onClick={() => setMethodFilter('rank')}>Sıralama</button>
+               </div>
+            </div>
 
             <div className="grid grid-cols-12 gap-8">
-               {methods.map((m, i) => (
+               {filteredMethods.map((m, i) => (
                   <motion.div 
-                    key={i} 
+                    key={m.id} 
                     className="col-span-12 lg:col-span-6 glass-panel p-10 rounded-[40px] border border-white/5 bg-[#1e293b]/20"
-                    whileHover={{ translateY: -8 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                    whileHover={{ translateY: -8, borderColor: 'rgba(59, 130, 246, 0.4)' }}
                   >
                      <div className="d-flex justify-content-between mb-8">
                         <div className="d-flex gap-5">
@@ -284,6 +316,10 @@ const Blueprint = ({ onBack }) => {
                               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#3b82f6', letterSpacing: '1px' }}>{m.cat.toUpperCase()}</span>
                            </div>
                         </div>
+                        <div className="text-right">
+                           <span style={{ fontSize: '0.65rem', color: '#94a3b8', display: 'block' }}>HASSASİYET</span>
+                           <span style={{ fontSize: '0.8rem', fontWeight: 800, color: m.accuracy === 'Maksimum' ? '#10b981' : '#fff' }}>{m.accuracy}</span>
+                        </div>
                      </div>
 
                      <div style={{ marginBottom: '35px' }}>
@@ -291,6 +327,11 @@ const Blueprint = ({ onBack }) => {
                      </div>
 
                      <div className="space-y-8">
+                        <div className="p-6 bg-black/40 rounded-2xl border border-white/5 font-mono text-sm text-blue-400">
+                           <span className="text-[10px] text-secondary d-block mb-2 uppercase font-black">Matematiksel Formül</span>
+                           {m.formula}
+                        </div>
+                        
                         <div>
                            <h5 style={{ fontSize: '0.8rem', color: '#3b82f6', fontWeight: 800, marginBottom: '15px', textTransform: 'uppercase' }}>Nasıl Çalışır?</h5>
                            <ul style={{ fontSize: '0.95rem', color: '#94a3b8', paddingLeft: '15px', listStyleType: 'decimal' }}>
@@ -365,20 +406,18 @@ const Blueprint = ({ onBack }) => {
       </footer>
 
       <style jsx>{`
-        .blueprint-paper-v8 {
-          min-height: 100vh;
-          position: relative;
-          z-index: 1;
+        .btn-filter {
+           padding: 10px 20px;
+           background: transparent;
+           border: 1px solid #1e293b;
+           color: #94a3b8;
+           border-radius: 10px;
+           font-size: 0.8rem;
+           font-weight: 700;
+           cursor: pointer;
+           transition: 0.3s;
         }
-        .blueprint-hero-grid {
-          position: fixed;
-          top: 0; left: 0; width: 100%; height: 100%;
-          background-image: 
-            linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
-          background-size: 80px 80px;
-          z-index: -1;
-        }
+        .btn-filter.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
         .btn-action {
            padding: 18px 40px;
            border-radius: 14px;
@@ -392,7 +431,6 @@ const Blueprint = ({ onBack }) => {
            border: none;
         }
         .btn-action:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.2); }
-        .glass-panel { transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
       `}</style>
     </div>
   );
